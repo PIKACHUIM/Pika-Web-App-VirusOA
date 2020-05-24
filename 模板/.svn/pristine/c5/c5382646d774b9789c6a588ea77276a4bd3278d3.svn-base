@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+
+    <title>2019nCoVAS</title>
+    <meta name="keywords" content="2019-NcoV,transmission,genome,psychological stress,LAUP,k-mer,bioinformatics">
+    <meta name="description" content="Web service for 2019-NcoV transmission, genome, and psychological stress analysis">
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+
+    <link rel="shortcut icon" href="logo.png">
+    <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+    <script src="js/jquery.min.js"></script>
+
+
+    <script language="javascript" type="text/javascript">
+
+        function write1(){
+
+            htmlobj=$.ajax({url:"head.html",async:false});
+            var head=htmlobj.responseText;
+            document.write(head);
+
+
+        }
+
+        write1();
+    </script>
+
+
+    <!---<script src="js/head_2.js"></script>-->
+
+
+    <style>
+        a.J_menuItem {
+            border-left: 2px solid rgba(34,36,38,.1);
+            /* border-right: 2px solid rgba(34,36,38,.1); */
+        }
+        a.dropdown-toggle {
+            border-left: 2px solid rgba(34,36,38,.1);
+            /* border-right: 2px solid rgba(34,36,38,.1); */
+        }
+        .navbar-header {
+            width: auto;
+        }
+        #page-wrapper .gray-bg {
+            margin-left: 10em;
+            margin-right: 10em;
+        }
+        #wrapper {
+            width: 100%;
+            overflow-x: hidden;
+            background-color: #ffffff;
+        }
+        #d
+        {
+            width: 80%;
+            boder: 1px solid #000;
+            height: 800px;
+            margin: auto;
+            padding: 0px;
+        }
+        #d1{
+            width: 80%;
+            height: 100px;
+            boder: 1px solid #000;
+            margin-top: 0;
+            margin-right: auto;
+            margin-bottom: 200;
+            margin-left: auto;
+            padding-bottom: 200px;
+        }
+
+        #d2
+        {
+            width:30%;
+            height:100px;
+            float:left;
+            boder:1px solid #000;
+            margin-light:10px;
+            margin-left:10px
+        }
+        #d3
+        {
+            width:30%;
+            height:100px;
+            boder:1px solid #000;
+            float:right;
+            margin-right:10px;
+        }
+    </style>
+
+</head>
+
+
+<body class="gray-bg">
+
+<div class="wrapper wrapper-content">
+    <div>
+        <ul class="breadcrumb" style="margin:5px 200px;font:bold 20px Georgia, serif">
+            <li><a href="home_1.html">首页</a></li>
+            <li class="active"><a href="psychology.html">疫情应激心态分析</a></li>
+            <li class="active">社交平台间情感词分析</li>
+        </ul>
+    </div>
+
+    <div style="border-style: solid;border-width:1px;margin: 15px 200px;padding:5px 15px;">
+
+        <div style="border-style:dotted;border-width:1px;border-radius:16px;margin:35px 10px;padding:25px;font-size:large">
+            <div style="margin: 10px 5px">
+                <form class="bs-example bs-example-form" role="form">
+                    <div class="input-group">
+                        <span style="position:relative;font:bold 20px Georgia, serif">情感词查询</span>
+                        <input type="text" style="margin:0 20px">
+                        <span style="margin-left:100px;font:bold 20px Georgia, serif">词语类别</span>
+                        <select style="margin:0 20px">
+                            <option value ="pos">正面</option>
+                            <option value ="neg">负面</option>
+                            <option value="neg-pos">中性</option>
+                            <option value="all">全部</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div>
+                <button type="button" class="btn btn-primary" onclick="" style="margin:10px 30px">提交</button>
+                <button type="button" class="btn btn-primary" onclick="" style="margin:10px 20px">重置</button>
+                <i class="glyphicon glyphicon-question-sign" style="font-size:15px;margin:20px 30px">帮助</i>
+            </div>
+        </div>
+        <div class="wordcloudmap" style="margin-top:50px">
+            <div class="row">
+                <div class="col-md-4" style="text-align:center;font:bold 25px Georgia">
+                    <p>正面词云图</p>
+                    <img src="img/pos.png" alt="positive" width="460px" height="460px">
+                </div>
+
+                <div class="col-md-4" style="text-align:center;font:bold 25px Georgia">
+                    <p>负面词云图</p>
+                    <img src="img/neg.png" alt="negative" width="460px" height="460px">
+                </div>
+
+                <div class="col-md-4" style="text-align:center;font:bold 25px Georgia">
+                    <p>中性词云图</p>
+                    <img src="img/neu.png" alt="neutral" width="460px" height="460px">
+                </div>
+            </div>
+        </div>
+
+        <div style="margin:50px 30px">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <p>介绍数据来源和统计办法</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
+<script type="text/javascript">
+
+
+</script>
+
+
+
+<script language="javascript" type="text/javascript">
+
+    function write2(){
+
+        htmlobj=$.ajax({url:"tail.html",async:false});
+        var tail=htmlobj.responseText;
+
+        document.write(tail);
+    }
+
+    write2();
+</script>
+
+<!--<script src="js/tail_2.js"></script>-->
+
+</body>
+</html>
+
+
+

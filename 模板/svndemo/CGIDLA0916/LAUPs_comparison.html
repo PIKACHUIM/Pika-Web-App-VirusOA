@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>LAUP analysis</title>
+    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <link rel="shortcut icon" href="favicon.ico"> <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+<div class="col-sm-12" style="margin-top: 15px; font-size: 18px; color: #000000;">Select two species for LAUPs comparison:</div>
+    <div class="row wrapper border-bottom white-bg page-heading">
+		<form method="get" class="form-horizontal" >
+            <div class="form-group col-sm-7" style="margin-top:20px;">
+                <label class="col-sm-3 control-label">Select species 1</label>
+                      
+                <div class="col-sm-6">
+                    <select class="form-control m-b" name="account1" id="classification1">
+                        <option value="all">Select species classification</option>
+                                  
+                    </select>
+                </div>
+            </div>
+            <div class="form-group col-sm-4" style="margin-top:20px;margin-left:-150px;">
+                
+
+                <div class="col-sm-12">
+                    <select class="form-control m-b" name="account1" id="species1">
+                        <option value="all">Select species</option>             
+                    </select>
+                </div>
+            </div>
+			<br>
+             <div class="form-group col-sm-7" style="margin-top:-15px;">
+                <label class="col-sm-3 control-label">Select species 2</label>
+                      
+                <div class="col-sm-6">
+                    <select class="form-control m-b" name="account2" id="classification2">
+                        <option value="all">Select species classification</option>
+                                  
+                    </select>
+                </div>
+            </div>
+            <div class="form-group col-sm-4" style="margin-top:-15px;margin-left:-150px;">
+                
+
+                <div class="col-sm-12">
+                    <select class="form-control m-b" name="account2" id="species2">
+                        <option value="all">Select species</option>             
+                    </select>
+                </div>
+            </div>
+			<div class="form-group col-sm-20" style="margin-top:50px;">
+				<button type="button" class="btn btn-primary" onclick="showreload()">Submit</button>
+            </div>
+							                 
+                            
+		</form>
+    </div>
+
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-6">
+				<div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>The dynamics of LAUPs</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="echarts" id="luap_chart"></div>
+                    </div>
+                </div>
+            </div>
+			<div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>GC/AG ratio</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="echarts" id="gc_chart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<div class="row" style="margin-top:20px;">
+			<div class="col-sm-12">
+			<h5>  Shortest LAUPs significance difference test :</h5>
+				<table class="table table-bordered" id="datagrid">
+								<thead>
+									<tr>
+										<th>Species</th>
+										<th>Genome Size<br/>(bp)</th>
+										<th>Shortest LAUPs K length</th>
+										<th>Shortest LAUPs Number</th>
+										<th>AT/CG compare<br/>(P value)</th>
+										<th>AG/CT compare<br/>(P value)</th>
+										
+									</tr>
+								</thead>
+								<tbody>
+									
+								</tbody>
+								
+				</table>
+			</div>
+		</div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="js/jquery.min.js?v=2.1.4"></script>
+    <script src="js/bootstrap.min.js?v=3.3.6"></script>
+
+    <!-- 自定义js -->
+    <script src="js/content.js?v=1.0.0"></script>
+
+    <!--<script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>-->
+    <!--统计代码，可删除-->
+	
+	<!--<script src="js/plugins/echarts/echarts-all.js"></script>-->
+	<script src="js/echarts.min.js"></script>
+	<script src="js/libs-655ac5be9c.min.js"></script>
+	<script src="js/LAUP.js"></script>
+	<script>
+		jQuery(document).ready(function() {
+		
+		luap_chart = echarts.init(document.getElementById('luap_chart'));
+		gc_chart = echarts.init(document.getElementById('gc_chart'));
+		
+		drawchart1(luap_chart);
+		drawchart2(gc_chart);
+		renderTable();
+		});
+		
+		$("#classification1").change(function(){
+			species();
+		});
+		$("#classification2").change(function(){
+			species2();
+		});
+		function drawchart1(chart,options){
+		
+			options = options || genFilterData();
+			var data1,data2;
+			showLoading(chart);
+			
+			API.luapchart({
+				filename:"result/"+options.filename+"result.out",
+				callback: function(data){
+					 data1=data;
+				}
+			});
+			API.luapchart({
+				filename:"result/"+options.filename2+"result.out",
+				callback:function(data){
+					data2=data;
+				}
+			});
+			//alert(data1.errtext);
+			//alert(data2.errtext);
+			var draw1=function(){
+					if(data1==""||data2==""){
+						chart.clear();
+						$("#luap_chart .nodata").remove();
+						option={};
+						$("#luap_chart").append('<div class="nodata" style="text-align:center;top: 0;width: 100%;display: flex;justify-content: center;align-items: center;position: absolute;height: 100%;">No data</div>');
+						//alert('请选择两个物种');
+						//console.log(data1);
+					}else{
+						$(".nodata").remove();
+						var test=data1.errtext.split('|');
+						var test2=data2.errtext.split('|');
+						//console.log(test[2]);
+						//console.log(test[2].split(','));
+						var a=test[2].split(',');
+						var a2=test2[2].split(',');
+						var value=['0','0','0','0','0','0','0','0'];
+						var value2=['0','0','0','0','0','0','0','0'];
+						for(var i=0;i<parseInt(a.length)-1;i++){
+							//alert(a[i]);
+							if(a[i]=="0"){
+								value.push(a[i]);
+							}else{
+								value.push(Math.log10(a[i]).toString());
+							}
+							
+						}
+						for(var i=0;i<parseInt(a2.length)-1;i++){
+							//alert(a[i]);
+							if(a2[i]=="0"){
+								value2.push(a2[i]);
+							}else{
+								value2.push(Math.log10(a2[i]).toString());
+							}
+							
+						}
+						//alert(a);alert(a2);
+						var v=a[parseInt(a.lastIndexOf("0"))+1];
+						var x=parseInt(value.lastIndexOf("0"))+1;
+						var y=(parseFloat(value[parseInt(value.lastIndexOf("0"))+1])).toFixed(1);
+						//物种2
+						var v2=a2[parseInt(a2.lastIndexOf("0"))+1];
+						var x2=parseInt(value2.lastIndexOf("0"))+1;
+					   var y2=(parseFloat(value2[parseInt(value2.lastIndexOf("0"))+1])).toFixed(1);
+						//alert(v+'  '+x+'  '+y+'  '+v2+'  '+x2+'  '+y2);
+						option = {
+							title : {
+								text: 'LAUP Number(log10)',
+								x: '15'
+							},
+							tooltip : {
+								trigger: 'axis'
+								
+							},
+							legend: {
+								data:[options.speciestext,options.speciestext2],
+								itemWidth: 10,             // 图例图形宽度
+								itemHeight: 14,
+								y: '20'
+							},
+							toolbox: {
+								show : true,
+								feature : {
+									mark : {show: true},
+									dataView : {show: true, readOnly: false,title:"Data view",lang:["Data view","Close","Refresh"]},
+									magicType : {show: true, type: ['line', 'bar'],title:{line:"Switch to line chart",bar:"Switch to bar chart"}},
+									restore : {show: true,title:"Restore"},
+									saveAsImage : {show: true,title:"Save as image"}
+								}
+							},
+							calculable : true,
+							xAxis : [
+								{
+									type : 'category',
+									name : 'k length',
+									data : ['1','2','3','4','5','6','7','8','9','10','11','12','13','14']
+								}
+							],
+							yAxis : [
+								{
+									type : 'value'
+								}
+							],
+							series : [
+								{
+								name:options.speciestext,
+								type:'bar',
+								data:value,
+								markPoint : {
+										data : [
+											{name : '', value : v, xAxis: x, yAxis: y, symbolSize:48}
+										]
+									}
+								}
+								,
+								{
+								name:options.speciestext2,
+								type:'bar',
+								data:value2,
+								markPoint : {
+										data : [
+											{name : '', value : v2, xAxis: x2, yAxis: y2, symbolSize:48}
+										]
+									}
+								}
+							]
+						};     //option结束
+					}  //第一个else结束
+					
+
+					
+					// 为echarts对象加载数据 
+					chart.setOption(option);
+					hideLoading(chart);
+					//alert(data1.errtext);
+				}();         //fuction结束
+			//});
+			
+		}
+		
+		function drawchart2(chart,options){
+			options = options || genFilterData();
+			showLoading(chart);
+			API.luapchart({
+				filename:"result/"+options.filename+"result.out",
+				callback: function(data){
+					 data1=data;
+				}
+			});
+			API.luapchart({
+				filename:"result/"+options.filename2+"result.out",
+				callback:function(data){
+					data2=data;
+				}
+			});
+			var draw2=function(){
+				    if(data1==""||data2==""){
+						chart.clear();
+						$("#gc_chart .nodata").remove();
+						option1={};
+						$("#gc_chart").append('<div class="nodata" style="text-align:center;top: 0;width: 100%;display: flex;justify-content: center;align-items: center;position: absolute;height: 100%;">No data</div>');
+					}else{
+						var test=data1.errtext.split('|');
+						var test2=data2.errtext.split('|');
+						
+						
+						var b=test[3].replace("CG rate:: ","").split(',');
+						var c=test[4].replace("AG rate:: ","").split(',');
+						
+						var b2=test2[3].replace("CG rate:: ","").split(',');
+						var c2=test2[4].replace("AG rate:: ","").split(',');
+						
+						var CG=[];
+						var AG=[];
+						
+						var CG2=[];
+						var AG2=[];
+						for(var i=0;i<parseInt(b.length)-1;i++){
+							//alert(b[i]);
+							CG.push(b[i]);
+						}
+						for(var i=0;i<parseInt(c.length)-1;i++){
+							//alert(c[i]);
+							AG.push(c[i]);
+						}
+						
+						for(var i=0;i<parseInt(b2.length)-1;i++){
+							//alert(b[i]);
+							CG2.push(b2[i]);
+						}
+						for(var i=0;i<parseInt(c2.length)-1;i++){
+							//alert(c[i]);
+							AG2.push(c2[i]);
+						}
+						option1 = {
+							title : {
+								text: 'LAUP GC/AG rate',
+								x: '15'
+							},
+							tooltip : {
+								trigger: 'axis'
+							},
+							legend: {
+								data:[''+options.speciestext+' GC rate',''+options.speciestext+' AG rate',''+options.speciestext2+' GC rate',''+options.speciestext2+' AG rate'],
+								y: '20'
+							
+							},
+							toolbox: {
+								show : true,
+								feature : {
+									mark : {show: true},
+									dataView : {show: true, readOnly: false,title:"Data view",lang:["Data view","Close","Refresh"]},
+									magicType : {show: true, type: ['line', 'bar'],title:{line:"Switch to line chart",bar:"Switch to bar chart"}},
+									restore : {show: true,title:"Restore"},
+									saveAsImage : {show: true,title:"Save as image"}
+								}
+							},
+							calculable : true,
+							xAxis : [
+								{
+									type : 'category',
+									name : 'k length',
+									data : ['9','10','11','12','13','14']
+								}
+							],
+							yAxis : [
+								{
+									type : 'value',
+									max : 1,
+									min : 0,
+									axisLabel: {
+										  show: true,
+										  interval: 'auto',
+										  formatter: function(value)
+											{
+												return value*100+"%";
+											}
+
+										}
+								}
+							],
+							series : [
+								{
+									name:''+options.speciestext+' GC rate',
+									type:'line',
+									data:CG
+								},
+								{
+									name:''+options.speciestext+' AG rate',
+									type:'line',
+									data:AG
+								},
+								{
+									name:''+options.speciestext2+' GC rate',
+									type:'line',
+									data:CG2
+								},
+								{
+									name:''+options.speciestext2+' AG rate',
+									type:'line',
+									data:AG2
+								}
+							]
+						};
+					}
+					chart.setOption(option1);
+					hideLoading(chart);
+				}();
+			};
+		
+			// 为echarts对象加载数据 
+			
+		
+		
+		function renderTable(options){
+		
+		options = options || genFilterData();
+
+		
+		if($("#species1").val()=="all"||$("#species2").val()=="all"){
+			var table = $('#datagrid').DataTable({
+			searching:false,
+			"paging":false,
+            language: {
+            "sProcessing": "processing...",
+            "sLengthMenu": "Display the results of _MENU_ .",
+            "sZeroRecords": "No matching results",
+            "sInfo": "Shows the result of items _START_ to _END_, _TOTAL_ items in total.",
+            "sInfoEmpty": "The results of items 0 to 0 are displayed, 0 items in total.",
+            "sInfoFiltered": "(Filtered by _MAX_.)",
+            "sInfoPostFix": "",
+            "sSearch": "search:",
+            "sUrl": "",
+            "sEmptyTable": "No data",
+            "sLoadingRecords": "loading...",
+            "sInfoThousands": ",",
+            "oPaginate": {
+                "sFirst": "First page",
+                "sPrevious": "Previous page",
+                "sNext": "Next page",
+                "sLast": "Last page"
+            },
+            "oAria": {
+                "sSortAscending": ": Sort this column in ascending order",
+                "sSortDescending": ": Sort this column in descending order"
+            }
+            },
+            data: [],
+						
+			"columns":[
+				{   
+					"data": "0" 
+				},
+				{   
+					"data": "1" 
+				},
+				{   
+					"data": "2",
+					"className": "hidden-480",
+				},
+				{   
+					"data": "3",
+					"className": "hidden-480",								
+				},
+				{   
+					"data": "4",
+					"className": "hidden-480",								
+				},
+				{   
+					"data": "5",
+					"className": "hidden-480",								
+				}
+			],
+                        
+        });		
+		}else{ 
+			$.get('xml/LAUP.xml',function(data){
+				var a=[];
+				var a2=[];
+				$(data).find("LUAP[value='"+$("#species1").find("option:selected").text()+"']").each(function(){
+					var Species1=$(this).children("Species").text();
+					var one=$(this).children("one").text();
+					var two=$(this).children("two").text();
+					var three=$(this).children("three").text();
+					var four=$(this).children("four").text();
+					var five=$(this).children("five").text();
+					
+					a.push([Species1,one,two,three,four,five]);
+
+				});
+				$(data).find("LUAP[value='"+$("#species2").find("option:selected").text()+"']").each(function(){
+					var Species2=$(this).children("Species").text();
+					var one=$(this).children("one").text();
+					var two=$(this).children("two").text();
+					var three=$(this).children("three").text();
+					var four=$(this).children("four").text();
+					var five=$(this).children("five").text();
+					
+					a2.push([Species2,one,two,three,four,five]);
+
+				});
+				if(options.update){
+                    var datatable = $('#datagrid').dataTable().api();
+                    datatable.clear();
+                    datatable.rows.add(a);
+					datatable.rows.add(a2);
+                    datatable.draw();
+                }else{
+				
+                    var table = $('#datagrid').DataTable({
+						searching:false,
+						"paging":false,
+                        language: {
+            "sProcessing": "processing...",
+            "sLengthMenu": "Display the results of _MENU_ .",
+            "sZeroRecords": "No matching results",
+            "sInfo": "Shows the result of items _START_ to _END_, _TOTAL_ items in total.",
+            "sInfoEmpty": "The results of items 0 to 0 are displayed, 0 items in total.",
+            "sInfoFiltered": "(Filtered by _MAX_.)",
+            "sInfoPostFix": "",
+            "sSearch": "search:",
+            "sUrl": "",
+            "sEmptyTable": "No data",
+            "sLoadingRecords": "loading...",
+            "sInfoThousands": ",",
+            "oPaginate": {
+                "sFirst": "First page",
+                "sPrevious": "Previous page",
+                "sNext": "Next page",
+                "sLast": "Last page"
+            },
+            "oAria": {
+                "sSortAscending": ": Sort this column in ascending order",
+                "sSortDescending": ": Sort this column in descending order"
+            }
+            },
+                        data: a,
+						
+						"columns":[
+							{   
+								"data": "0" 
+							},
+							{   
+								"data": "1" 
+							},
+							{   
+								"data": "2",
+								"className": "hidden-480",
+							},
+							{   
+								"data": "3",
+								"className": "hidden-480",								
+							},
+							{   
+								"data": "4",
+								"className": "hidden-480",								
+							},
+							{   
+								"data": "5",
+								"className": "hidden-480",								
+							}
+						],
+                        
+                    });
+
+				}
+			}); 
+		}
+			
+			
+				
+                
+       
+		}
+		function showreload(){
+		var options = genFilterData();
+		//var options2 = genFilterData();
+			drawchart1(luap_chart);
+			drawchart2(gc_chart);
+			if(data1==""||data2==""){
+				alert('Please select two species');
+				}
+			options.update = true;
+        
+        
+			renderTable(options);
+		}
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>WSLAUP</title>
+<meta name="keywords" content="LAUP,k-mer,bioinformatics">
+<meta name="description" content="Web Server for Lineage-associated Underrepresented Permutations (LAUPs)">
+<link rel="shortcut icon" href="favicon.ico"> <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+<h2 style="text-align: center; color: #000;"></h2>
+<ul>
+<p style="font-size: 18px; color: #000; text-align: left;">You can find the MEME Motif discovery tool here: <a href="http://meme-suite.org/tools/meme" style="font-size: 20px">http://meme-suite.org/tools/meme</a></p>
+<ol style="color:#000; font-size:18px;">
+  <li><span style="color: #000000; font-size: 18px;">First, you can enter sequences  in which you want to find motifs<strong> <span style="color: #FF0000">① </span></strong>.And  Select the number of  motifs <span style="color: #FF0000"><strong>② </strong></span>, we also suggest you to select some advanced options in <span style="color: #FF0000"><strong>③ </strong></span>.</br>
+  </span>
+
+    <p><img border="0" width="497" height="658" src="img/meme01.png"></p></li>
+<li><span style="color: #000; font-size: 18px;">You can click &ldquo;Start Search&rdquo; to  start the Motif discovery, and it will go to a waiting page like:</br>
+</span>
+<p><img border="0" width="467" height="349" src="img/meme02.png"> </p>
+
+<p>
+  <span style="color: #000; font-size: 18px;">You can also bookmark this page or use the Recent Jobs menu  at the left<strong><span style="color: #F00"> ④</span></strong> to access your job's results later. </span></p>
+</li>
+  <li><span style="color: #000; font-size: 18px;">After the job is completed, it  will go to a page like:</br>
+  </span>
+
+<p><img border="0" width="482" height="484" src="img/meme03.png"></p>
+</li>
+  <li><span style="color: #000; font-size: 18px;">You can click &ldquo;MEME HTML output&rdquo;  button <strong><span style="color: #F00">⑤ </span></strong>and check the detail result  of Motifs:</br>
+  </span>
+    <p><img border="0" width="435" height="617" src="img/meme04.png"></p>
+</li>
+</ol>
+</ul>
+<p style="color: #000; font-size: 18px;">&nbsp;&nbsp;&nbsp;You can also use the code vision of MEME, detail  documentation please check : <a href="http://meme-suite.org/doc/meme.html">http://meme-suite.org/doc/meme.html</a></p>
+</body>
+</html>

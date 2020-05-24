@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>LAUP analysis</title>
+    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <link rel="shortcut icon" href="favicon.ico"> <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+    <div class="row wrapper border-bottom white-bg page-heading">
+		<form method="get" class="form-horizontal" >
+            <div class="form-group col-sm-4" style="margin-top:20px;">
+                <label class="col-sm-2 control-label">选择物种</label>
+
+                <div class="col-sm-10">
+                    <select class="form-control m-b" name="account" id="classification">
+                        <option value="all">请选择物种分类</option>
+                                  
+                    </select>
+                </div>
+            </div>
+            <div class="form-group col-sm-4" style="margin-top:20px;">
+                
+
+                <div class="col-sm-12">
+                    <select class="form-control m-b" name="account" id="species">
+                        <option value="all">请选择物种</option>             
+                    </select>
+                </div>
+            </div>
+			
+			<div class="form-group col-sm-4" style="margin-top:20px;">
+				<button type="button" class="btn btn-primary" onclick="showreload()">确定</button>
+            </div>
+							                 
+                            
+		</form>
+    </div>
+
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-6">
+				<div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>LAUP出现图</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="echarts" id="luap_chart"></div>
+                    </div>
+                </div>
+            </div>
+			<div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>GC/AG比例图</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="echarts" id="gc_chart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<div class="row" style="margin-top:20px;">
+			<div class="col-sm-12">
+				<table class="table table-bordered" id="datagrid">
+								<thead>
+									<tr>
+										<th>Species</th>
+										<th>First occurred LAUP (number in genome)</th>
+										<th>WG AT/CG content compare(P value)</th>
+										<th>WG AG/CT content compare(P value)</th>
+										<th>First occurred LAUP (number in CDS)</th>
+										<th>CDS AT/CG content compare(P value)</th>
+										<th>CDS AG/CT content compare(P value)</th>
+									</tr>
+								</thead>
+								<tbody>
+									
+								</tbody>
+								
+				</table>
+			</div>
+		</div>
+    </div>
+
+    <!-- 全局js -->
+    <script src="js/jquery.min.js?v=2.1.4"></script>
+    <script src="js/bootstrap.min.js?v=3.3.6"></script>
+
+    <!-- 自定义js -->
+    <script src="js/content.js?v=1.0.0"></script>
+
+    <!--<script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>-->
+    <!--统计代码，可删除-->
+	
+	<!--<script src="js/plugins/echarts/echarts-all.js"></script>-->
+	<script src="js/echarts.min.js"></script>
+	<script src="js/libs-655ac5be9c.min.js"></script>
+	<script src="js/LUAP.js"></script>
+	<script>
+		jQuery(document).ready(function() {
+		
+		luap_chart = echarts.init(document.getElementById('luap_chart'));
+		gc_chart = echarts.init(document.getElementById('gc_chart'));
+		
+		drawchart1(luap_chart);
+		drawchart2(gc_chart);
+		renderTable();
+		});
+		
+		$("#classification").change(function(){
+			species();
+		});
+		
+		function drawchart1(chart,options){
+		
+			options = options || genFilterData();
+			
+			showLoading(chart);
+			
+			API.luapchart({
+				filename:"result/"+options.filename+"result.out",
+				callback: function(data){
+					if(data==""){
+						chart.clear();
+						$("#luap_chart .nodata").remove();
+						option={};
+						$("#luap_chart").append('<div class="nodata" style="text-align:center;top: 0;width: 100%;display: flex;justify-content: center;align-items: center;position: absolute;height: 100%;">暂无数据</div>');
+					}else{
+						$(".nodata").remove();
+						var test=data.errtext.split('|');
+						//console.log(test[2]);
+						//console.log(test[2].split(','));
+						var a=test[2].split(',');
+						var value=['0','0','0','0','0','0','0','0'];
+						for(var i=0;i<parseInt(a.length)-1;i++){
+							//alert(a[i]);
+							if(a[i]=="0"){
+								value.push(a[i]);
+							}else{
+								value.push(Math.log10(a[i]).toString());
+							}
+							
+						}
+						
+						var v=a[parseInt(a.lastIndexOf("0"))+1];
+						var x=parseInt(value.lastIndexOf("0"))+1;
+						var y=(parseFloat(value[parseInt(value.lastIndexOf("0"))+1])+0.2).toFixed(1);
+						
+						option = {
+							title : {
+								text: 'LAUP Number(log10)',
+								x: '15'
+							},
+							tooltip : {
+								trigger: 'axis'
+								
+							},
+							legend: {
+								data:[options.speciestext],
+								itemWidth: 10,             // 图例图形宽度
+								itemHeight: 14,
+								y: '20'
+							},
+							toolbox: {
+								show : true,
+								feature : {
+									mark : {show: true},
+									dataView : {show: true, readOnly: false},
+									magicType : {show: true, type: ['line', 'bar']},
+									restore : {show: true},
+									saveAsImage : {show: true}
+								}
+							},
+							calculable : true,
+							xAxis : [
+								{
+									type : 'category',
+									data : ['1mer','2mer','3mer','4mer','5mer','6mer','7mer','8mer','9mer','10mer','11mer','12mer','13mer','14mer']
+								}
+							],
+							yAxis : [
+								{
+									type : 'value'
+								}
+							],
+							series : [
+								{
+								name:options.speciestext,
+								type:'line',
+								data:value,
+								markPoint : {
+										data : [
+											{name : '', value : v, xAxis: x, yAxis: y, symbolSize:48}
+										]
+									}
+								}
+							]
+						};
+					}
+					
+
+					
+					// 为echarts对象加载数据 
+					chart.setOption(option);
+					hideLoading(chart);
+				}
+			});
+			
+		}
+		
+		function drawchart2(chart,options){
+			options = options || genFilterData();
+			showLoading(chart);
+			API.luapchart({
+				filename:"result/"+options.filename+"result.out",
+				callback: function(data){
+				    if(data==""){
+						chart.clear();
+						$("#gc_chart .nodata").remove();
+						option1={};
+						$("#gc_chart").append('<div class="nodata" style="text-align:center;top: 0;width: 100%;display: flex;justify-content: center;align-items: center;position: absolute;height: 100%;">暂无数据</div>');
+					}else{
+						var test=data.errtext.split('|');
+						
+						var b=test[3].replace("CG rate:: ","").split(',');
+						var c=test[4].replace("AG rate:: ","").split(',');
+						
+						var CG=["0"];
+						var AG=["0"];
+						for(var i=0;i<parseInt(b.length)-1;i++){
+							//alert(b[i]);
+							CG.push(b[i]);
+						}
+						for(var i=0;i<parseInt(c.length)-1;i++){
+							//alert(c[i]);
+							AG.push(c[i]);
+						}
+						
+						option1 = {
+							title : {
+								text: 'LAUP GC/AG rate',
+								x: '15'
+							},
+							tooltip : {
+								trigger: 'axis'
+							},
+							legend: {
+								data:[''+options.speciestext+' GC rate',''+options.speciestext+' AG rate'],
+								y: '20'
+							
+							},
+							toolbox: {
+								show : true,
+								feature : {
+									mark : {show: true},
+									dataView : {show: true, readOnly: false},
+									magicType : {show: true, type: ['line', 'bar']},
+									restore : {show: true},
+									saveAsImage : {show: true}
+								}
+							},
+							calculable : true,
+							xAxis : [
+								{
+									type : 'category',
+									data : ['9mer','10mer','11mer','12mer','13mer','14mer','15mer']
+								}
+							],
+							yAxis : [
+								{
+									type : 'value',
+									max : 1,
+									min : 0,
+									axisLabel: {
+										  show: true,
+										  interval: 'auto',
+										  formatter: function(value)
+											{
+												return value*100+"%";
+											}
+
+										}
+								}
+							],
+							series : [
+								{
+									name:''+options.speciestext+' GC rate',
+									type:'line',
+									data:CG
+								},
+								{
+									name:''+options.speciestext+' AG rate',
+									type:'line',
+									data:AG
+								}
+							]
+						};
+					}
+					chart.setOption(option1);
+					hideLoading(chart);
+				}
+			});
+			
+		
+			// 为echarts对象加载数据 
+			
+		}
+		
+		function renderTable(options){
+		
+		options = options || genFilterData();
+
+		
+		if($("#species").val()=="all"){
+			var table = $('#datagrid').DataTable({
+			searching:false,
+			"paging":false,
+            language: {
+            "sProcessing": "处理中...",
+            "sLengthMenu": "显示 _MENU_ 项结果",
+            "sZeroRecords": "没有匹配结果",
+            "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+            "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+            "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+            "sInfoPostFix": "",
+            "sSearch": "搜索:",
+            "sUrl": "",
+            "sEmptyTable": "表中数据为空",
+            "sLoadingRecords": "载入中...",
+            "sInfoThousands": ",",
+            "oPaginate": {
+                "sFirst": "首页",
+                "sPrevious": "上页",
+                "sNext": "下页",
+                "sLast": "末页"
+            },
+            "oAria": {
+                "sSortAscending": ": 以升序排列此列",
+                "sSortDescending": ": 以降序排列此列"
+            }
+            },
+            data: [],
+						
+			"columns":[
+				{   
+					"data": "0" 
+				},
+				{   
+					"data": "1" 
+				},
+				{   
+					"data": "2",
+					"className": "hidden-480",
+				},
+				{   
+					"data": "3",
+					"className": "hidden-480",								
+				},
+				{   
+					"data": "4",
+					"className": "hidden-480",								
+				},
+				{   
+					"data": "5",
+					"className": "hidden-480",								
+				},
+				{   
+					"data": "6",
+					"className": "hidden-480",								
+				}
+			],
+                        
+        });		
+		}else{ 
+			$.get('xml/LUAP.xml',function(data){
+				var a=[];
+				
+				$(data).find("LUAP[value='"+$("#species").find("option:selected").text()+"']").each(function(){
+					var Species=$(this).children("Species").text();
+					var one=$(this).children("one").text();
+					var two=$(this).children("two").text();
+					var three=$(this).children("three").text();
+					var four=$(this).children("four").text();
+					var five=$(this).children("five").text();
+					var six=$(this).children("six").text();
+					a.push([Species,one,two,three,four,five,six]);
+
+				});
+				if(options.update){
+                    var datatable = $('#datagrid').dataTable().api();
+                    datatable.clear();
+                    datatable.rows.add(a);
+                    datatable.draw();
+                }else{
+				
+                    var table = $('#datagrid').DataTable({
+						searching:false,
+						"paging":false,
+                        language: {
+                            "sProcessing": "处理中...",
+                            "sLengthMenu": "显示 _MENU_ 项结果",
+                            "sZeroRecords": "没有匹配结果",
+                            "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                            "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                            "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                            "sInfoPostFix": "",
+                            "sSearch": "搜索:",
+                            "sUrl": "",
+                            "sEmptyTable": "表中数据为空",
+                            "sLoadingRecords": "载入中...",
+                            "sInfoThousands": ",",
+                            "oPaginate": {
+                                "sFirst": "首页",
+                                "sPrevious": "上页",
+                                "sNext": "下页",
+                                "sLast": "末页"
+                            },
+                            "oAria": {
+                                "sSortAscending": ": 以升序排列此列",
+                                "sSortDescending": ": 以降序排列此列"
+                            }
+                        },
+                        data: a,
+						
+						"columns":[
+							{   
+								"data": "0" 
+							},
+							{   
+								"data": "1" 
+							},
+							{   
+								"data": "2",
+								"className": "hidden-480",
+							},
+							{   
+								"data": "3",
+								"className": "hidden-480",								
+							},
+							{   
+								"data": "4",
+								"className": "hidden-480",								
+							},
+							{   
+								"data": "5",
+								"className": "hidden-480",								
+							},
+							{   
+								"data": "6",
+								"className": "hidden-480",								
+							}
+						],
+                        
+                    });
+
+				}
+			}); 
+		}
+			
+			
+				
+                
+       
+		}
+		function showreload(){
+		var options = genFilterData();
+			drawchart1(luap_chart);
+			drawchart2(gc_chart);
+			options.update = true;
+        
+        
+			renderTable(options);
+		}
+	</script>
+</body>
+
+</html>

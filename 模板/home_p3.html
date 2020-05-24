@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>CGIDLA</title>
+    <meta name="keywords" content="LAUP,CpG isl,k-mer,bioinformatics">
+    <meta name="description"
+          content="WA web server for CpG Island study:CpG Island related density and LAUPs (Lineage-associated Underrepresented Permutations) analysis">
+    <link rel="shortcut icon" href="logo.png">
+    <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+    <script src="js/newhead.js"></script>
+    <link rel="icon"          type="image/x-icon" href="./favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
+    <link rel="stylesheet"    href="assets/css/font-awesome.min.css">
+    <link rel="stylesheet"    href="assets/css/googleapis.css">
+    <script src="./assets/js/require.min.js"></script>
+    <script>requirejs.config({baseUrl: '.'});</script>
+    <link  href="./assets/plugins/charts-c3/plugin.css" rel="stylesheet" />
+    <script src="./assets/plugins/charts-c3/plugin.js"></script>
+    <link  href="./assets/plugins/maps-google/plugin.css" rel="stylesheet" />
+    <script src="./assets/plugins/maps-google/plugin.js"></script>
+    <script src="./assets/plugins/input-mask/plugin.js"></script>
+    <style>.a-right{border: 1px solid #000000;box-sizing: border-box;border-radius: 15px;!important;}</style>
+    <style>.a-ints{margin:5% 5% 5% 5%;}</style>
+</head>
+
+<body class="gray-bg ">
+<div class="page ">
+    <!------------------------------------------------------网站内容------------------------------------------------------->
+    <div class="my-3 my-md-5">
+        <br />
+        <div class="container a-right ">
+            <div class="page-header ">
+                <h1 class="page-title">新冠疫情预测</h1>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 order-lg-1 mb-4">
+                    <a href="" class="btn btn-block btn-primary mb-6">
+                        <i class="fe fe-github mr-2"></i>
+                    </a>
+                    <div class="list-group list-group-transparent mb-0">
+                        <a href="../docs/index.html" class="list-group-item list-group-item-action active"><span class="icon mr-3"><i class="fe fe-flag"></i></span>内容分类</a>
+                    </div>
+                    <div class="list-group list-group-transparent mb-0">
+                        <a href="./home_p1.html" class="list-group-item list-group-item-action"><span class="icon mr-3"><i class="fe fe-alert-triangle"></i></span>疫情曲线</a>
+                        <a href="./home_p2.html" class="list-group-item list-group-item-action"><span class="icon mr-3"><i class="fe fe-user"></i></span>自定义模型</a>
+                        <a href="./home_p3.html" class="list-group-item list-group-item-action"><span class="icon mr-3"><i class="fe fe-plus-square"></i></span>模拟拟合</a>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <!-------------------------------------------------------------------------------------------------------------------------------------------------------------->
+                    <div class="card a-right">
+                        <div class="card-header a-ints">
+                            <h2 class="card-title">疫情曲线</h2>
+                        </div>
+                        <div class="card-body a-ints">
+                            <div class="row">
+                                <div class="form-group col-sm-4 col-md-2">
+                                    <label class="form-label">
+                                        模型选择 <span class="form-required">*</span>
+                                    </label>
+                                    <select class="custom-select">
+                                        <option value="模型1">模型1</option>
+                                        <option value="模型2">模型2</option>
+                                        <option value="模型3">模型3</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-label">模型参数</div>
+                            <div class="table-responsive">
+                                <table class="table mb-0">
+                                    <thead>
+                                    <tr>
+                                        <th>感染系数</th>
+                                        <th>康复率  </th>
+                                        <th>预测时长</th>
+                                    </tr>
+                                    </thead>
+                                    <tr>
+                                        <td class="pl-0">
+                                            <input type="text" class="form-control"></td>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control"></td>
+                                        <td>
+                                            <label for="meeting"></label><input id="meeting" type="date" value="2020-01-01"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card-footer text-right a-ints">
+                            <button type="submit" style="background-color:#ff0000" class="btn btn-primary">清空</button>
+                            <button type="submit" class="btn btn-primary">预测</button>
+                        </div>
+                    </div>
+                <br /><br /><br /><br />
+                    <!-------------------------------------------------------------------------------------------------------------------------------------------------------------->
+                    <div class="card a-right">
+                        <h2 class="card-title a-ints">预测结果</h2>
+                        <br />
+                        <img class="a-ints" src="assets/images/graph/1.png" /><br /><br />
+						<img class="a-ints" src="assets/images/graph/2.png" /><br /><br />
+						<img class="a-ints" src="assets/images/graph/3.png" /><br /><br />
+						<img class="a-ints" src="assets/images/graph/4.png" /><br /><br />
+                        <br /><br />
+                    </div>
+                    <!-------------------------------------------------------------------------------------------------------------------------------------------------------------->
+                    <br /><br /><br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+<!-------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+
+<!-------------------------------------------------------------------------------------------------------------------------------------------------------------->
+</body>
+</html>

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WSLAUP</title>
+<meta name="keywords" content="LAUP,k-mer,bioinformatics">
+<meta name="description" content="Web Server for Lineage-associated Underrepresented Permutations (LAUPs)">
+
+<link rel="shortcut icon" href="favicon.ico"> <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+<link href="css/style.min.css?v=4.1.0" rel="stylesheet">
+
+
+<style type="text/css">
+#download {
+	color: #000;
+}
+</style>
+<style>
+    .demo-box {
+	    margin-top: 40px;
+        width: 80%;
+        padding: 20px;
+		align:left;
+    }
+    
+    .demo-table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    
+    .demo-table caption {
+        border-bottom: 1px dashed #ccc;
+        height: 40px;
+        margin-bottom: 20px;
+        font: 18px/1.2 normal 'microsoft yahei';
+    }
+    
+    .demo-table tr td {
+        padding: 8px 10px;
+        font: 16px/1.8 normal 'microsoft yahei';
+        vertical-align: top;
+    }
+    
+    .ui-input {
+        vertical-align: top;
+        height: 18px;
+        font-size: 16px;
+        line-height: 20px;
+        border: 1px solid #aaa;
+        padding: 6px 8px;
+        border-radius: 3px;
+    }
+		.jq22-header h1{ text-align: center; font-size: 16px; }
+</style>
+</head>
+
+<body class="gray-bg">
+
+<div id="jstree_div" class="row wrapper border-bottom white-bg page-heading">
+<div class="col-sm-12" style="margin-top: 15px; font-size: 18px; color: #000000;">Select multiple species for common LAUP calculations :</div>
+   
+<div class="demo-box">
+	        <table class="demo-table">
+	            <tbody>
+					<tr>
+						<td>
+							<label>Bacteria:</label>
+						</td>
+						<td>
+							<select class="ui-choose" multiple="multiple" id="1" style="display: none;">
+								<option value="1">Bacteria</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label>Plants:</label>
+						</td>
+						<td>
+							<select class="ui-choose" multiple="multiple" id="1" style="display: none;">
+								<option value="2">Oryza sativa</option>
+								<option value="3">Arabidopsis thaliana</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label>Human:</label>
+						</td>
+						<td>
+							<select class="ui-choose" multiple="multiple" id="1" style="display: none;">
+								<option value="4">Homo sapiens</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label>Primats:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>(except human)</label>
+						</td>
+						<td>
+							<select class="ui-choose" multiple="multiple" id="1" style="display: none;">
+								<option value="5">Ornithorhynchus anatinus</option>
+								<option value="6">Pan troglodytes</option>
+								<option value="7">Macaca mulatta</option>
+								<option value="8">Papio anubis</option>
+								<option value="9">Colobus angolensis</option>
+								<option value="10">Aotus nancymaae</option>
+								<option value="11">Callithrix jacchus</option>
+								<option value="12">Microcebus murinus</option>
+								<option value="13">Otolemur garnettii</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label>Mammals:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>(except Primates)</label>
+						</td>
+						<td>
+							<select class="ui-choose" multiple="multiple" id="1" style="display: none;">
+								<option value="14">Rattus norvegicus</option>
+								<option value="15">Mus musculus</option>
+								<option value="16">Oryctolagus cuniculus</option>
+								<option value="17">Canislupus familiaris</option>
+								<option value="18">Colobus angolensis</option>
+								<option value="19">Miniopterus natalensis</option>
+								<option value="20">Erinaceus europaeus</option>
+								<option value="21">Dasypus novemcinctus</option>
+								<option value="22">Loxodonta africana</option>
+								<option value="23">Echinops telfairi</option>
+								<option value="24">Monodelphis domestica</option>
+							</select>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+	    </div>
+     
+  <div  id=submit class="form-group col-sm-2" style="margin-top: 2px;margin-left: 35px;">
+  
+	<button type="button" class="btn btn-primary" style="font-size: 20px;" onclick="showreload()">Submit</button>
+  </div>
+  <div id=notice class="col-sm-6" style="color: #000;margin-top: 20px;margin-left: -80px;font-size: 16px;">
+  
+  </div> 
+   
+</div>
+        <div class="row wrapper wrapper-content">
+            <div class="col-sm-6">
+				<div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>The dynamics of LAUPs</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="echarts" id="luap_chart"></div>
+                    </div>
+                </div>
+            </div>
+			<div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>GC/AG ratio</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="echarts" id="gc_chart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<div class="row white-bg wrapper wrapper-content" style="margin-top:-15px;margin-left:20px;margin-right:20px;margin-bottom:20px;">
+<div id="download" style="font-size: 16px;">
+The species you selected ： ......<br>The shortest k length of the commonLAUPs in the DNA of the selected species ： ......<br>Please click here to download and view the shortest commonLAUPs ： ...... 
+</div>	
+</div>   
+<!-- 全局js -->
+    <script src="js/jquery.min.js?v=2.1.4"></script>
+    <script src="js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="js/json2.js"></script>
+	
+	<link href="http://www.jsdaima.com/Upload/1484025910/ui-choose.css" rel="stylesheet"-->
+	<script src="//hm.baidu.com/hm.js?dde6ba2851f3db0ddc415ce0f895822e"--></script>
+	<script src="http://www.jsdaima.com/Upload/1484025910/jquery-1.11.0.min.js"></script>
+	<script src="http://www.jsdaima.com/Upload/1484025910/ui-choose.js"></script>
+	
+    <!-- 自定义js -->
+    <script src="js/content.js?v=1.0.0"></script>
+    
+	<!--<script src="js/plugins/echarts/echarts-all.js"></script>-->
+	<script src="js/echarts.min.js"></script>
+	<!--<script src="js/libs-655ac5be9c.min.js"></script>-->
+	<script src="js/LAUP.js"></script>
+	<script>
+	
+	// 将所有.ui-choose实例化
+	$('.ui-choose').ui_choose();
+
+	                       
+
+	
+	
+
+  
+  jQuery(document).ready(function() {
+		
+		luap_chart = echarts.init(document.getElementById('luap_chart'));
+		gc_chart = echarts.init(document.getElementById('gc_chart'));
+		
+		//drawchart1(luap_chart);
+		//drawchart2(gc_chart);
+		//renderTable();
+		});
+		function drawchart1(chart,data){
+			//showLoading(chart);
+			
+			           if(data==""){
+						chart.clear();
+						$("#luap_chart .nodata").remove();
+						option={};
+						$("#luap_chart").append('<div class="nodata" style="text-align:center;top: 0;width: 100%;display: flex;justify-content: center;align-items: center;position: absolute;height: 100%;">No data</div>');
+					}else{
+						$(".nodata").remove();
+						var test=data.split('|');
+						//console.log(test[2]);
+						//console.log(test[2].split(','));
+						var a=test[1].split(',');console.log(a)
+						var value=['0','0','0','0','0','0','0','0'];
+						for(var i=0;i<parseInt(a.length)-1;i++){
+							//alert(a[i]);
+							if(a[i]=="0"){
+								value.push(a[i]);
+							}else{
+								value.push(Math.log10(a[i]).toString());
+							}
+							
+						}console.log(value)
+						
+						var v=a[parseInt(a.lastIndexOf("0"))+1];
+						var x=parseInt(value.lastIndexOf("0"))+1;
+						//alert(x)
+						var y=(parseFloat(value[parseInt(value.lastIndexOf("0"))+1])).toFixed(1);
+						
+						option = {
+							title : {
+								text: 'LAUP Number(log10)',
+								x: '15'
+							},
+							tooltip : {
+								trigger: 'axis'
+								
+							},
+							legend: {
+								data:['Multiple species'],
+								itemWidth: 10,             // 图例图形宽度
+								itemHeight: 14,
+								y: '20'
+							},
+							toolbox: {
+								show : true,
+								feature : {
+									mark : {show: true},
+									dataView : {show: true, readOnly: false,title:"Data view",lang:["Data view","Close","Refresh"]},
+									magicType : {show: true, type: ['line', 'bar'],title:{line:"Switch to line chart",bar:"Switch to bar chart"}},
+									restore : {show: true,title:"Restore"},
+									saveAsImage : {show: true,title:"Save as image"}
+								}
+							},
+							
+							calculable : true,
+							xAxis : [
+								{
+									type : 'category',
+									data : ['1','2','3','4','5','6','7','8','9','10','11','12','13']
+								}
+							],
+							yAxis : [
+								{
+									type : 'value'
+								}
+							],
+							series : [
+								{
+								name:'Multiple species',//options.speciestext,
+								type:'bar',
+								data:value,
+								markPoint : {
+										data : [
+											{name : '', value : v, xAxis: x, yAxis: y, symbolSize:48}
+										]
+									}
+								}
+							]
+						};
+		            // 为echarts对象加载数据 
+					chart.setOption(option);
+					hideLoading(chart);
+				}
+		}
+		
+		function drawchart2(chart,data){
+			//showLoading(chart);
+				    if(data==""){
+						chart.clear();
+						$("#gc_chart .nodata").remove();
+						option1={};
+						$("#gc_chart").append('<div class="nodata" style="text-align:center;top: 0;width: 100%;display: flex;justify-content: center;align-items: center;position: absolute;height: 100%;">No data</div>');
+					}else{
+						var test=data.split('|');
+						
+						var b=test[2].replace("CG rate:: ","").split(',');
+						var c=test[3].replace("AG rate:: ","").split(',');
+						
+						var CG=[];
+						var AG=[];
+						for(var i=0;i<parseInt(b.length)-1;i++){
+							//alert(b[i]);
+							CG.push(b[i]);
+						}
+						for(var i=0;i<parseInt(c.length)-1;i++){
+							//alert(c[i]);
+							AG.push(c[i]);
+						}
+						
+						option1 = {
+							title : {
+								text: 'LAUP GC/AG rate',
+								x: '15'
+							},
+							tooltip : {
+								trigger: 'axis'
+							},
+							legend: {
+								data:[' GC rate',' AG rate'],
+								y: '20'
+							
+							},
+							toolbox: {
+								show : true,
+								feature : {
+									mark : {show: true},
+									dataView : {show: true, readOnly: false,title:"Data view",lang:["Data view","Close","Refresh"]},
+									magicType : {show: true, type: ['line', 'bar'],title:{line:"Switch to line chart",bar:"Switch to bar chart"}},
+									restore : {show: true,title:"Restore"},
+									saveAsImage : {show: true,title:"Save as image"}
+								}
+							},
+							calculable : true,
+							xAxis : [
+								{
+									type : 'category',
+									data : ['9','10','11','12','13']
+								}
+							],
+							yAxis : [
+								{
+									type : 'value',
+									max : 1,
+									min : 0,
+									axisLabel: {
+										  show: true,
+										  interval: 'auto',
+										  formatter: function(value)
+											{
+												return value*100+"%";
+											}
+
+										}
+								}
+							],
+							series : [
+								{
+									name:' GC rate',
+									type:'line',
+									data:CG
+								},
+								{
+									name:' AG rate',
+									type:'line',
+									data:AG
+								}
+							]
+						};
+					
+					chart.setOption(option1);
+					hideLoading(chart);
+				}
+		    }
+	
+  var names="";	
+  function showreload(){
+  
+  //xman:得所有选中的物种名称
+	var all_choose = $('.ui-choose');
+	var len = all_choose.length;
+	var selcted_ids = new Array();
+	var id
+	for(var i=0;i<(len-1);i++){
+		var one_select = all_choose[i];
+		//xman:注意，这里约定每一个selected的id都为1
+		if(one_select.id == 1)
+		{
+			for(var j=0;j<one_select.options.length;j++){
+			if(one_select.options[j].selected){
+				names += one_select.options[j].text + ",";
+				selcted_ids.push(one_select.options[j].value);
+			   }
+			} 
+		}
+	 }
+	 
+ //alert(names);
+ 
+ //取得所有选中的物种编号并且发往服务器
+
+  function sorts(a,b){return a-b;}
+   selcted_ids.sort(sorts);   //选中的物种id从小到大排序（数组）
+
+   if(selcted_ids.length<2)
+   {alert('Please select more than one species !')}
+   else{
+   com_id=selcted_ids.join(',');    //转换为字符串
+   //alert(com_id);
+  
+   sendcmd({com_species:com_id,
+	       callback: function(data){
+					  com_data=data;
+					  //alert(com_data);
+					  console.log(com_data)
+			    }
+		  });
+   //alert(com_id)
+   if((com_data.errcode=="0")||(com_data.errcode==0))
+   {
+		//xman:如果服务器已经有结果，直接画
+	   drawAndShow(com_data);
+   }
+	else if((com_data.errcode=="1")||(com_data.errcode==1))
+	{
+		//xman：如果服务器之前没算过，makecmd启动计算
+		 makecmd({com_species:com_id});
+		 luap_chart.clear();
+		 $(".nodata").remove();
+		 gc_chart.clear();
+		 
+		 $('#download').html("The species you selected ："+names+"<br><br>The shortest k length of the commonLAUPs in the DNA of the selected species ：......<br><br>Please click here to download and view the shortest commonLAUPs ：.......");
+		 $('#submit').html('<button type="button" class="btn btn-primary" style="background-color: #A3A3A3;" >Submit</button>');
+		 $('#notice').html('The last submitted calculation has not been completed, please wait!');		
+		 showLoading(luap_chart);
+		 showLoading(gc_chart);
+		 alert('It is being analyzed, please wait a moment.')
+	 //xman:隔一段时间判断一次
+	 startCheckCountOver();
+	 }
+   }
+  }
+  
+  function startCheckCountOver()
+  {
+	 var interval = 10000;
+	 setTimeout(checkCountOver, interval);
+  }
+  
+  function checkCountOver()
+  {
+	sendcmd({com_species:com_id,
+	       callback: function(data){
+					  com_data=data;
+					  //xman:如果算完了
+					  if((com_data.errcode=="0")||(com_data.errcode==0))
+					  {//console.log(com_data);
+						drawAndShow(com_data);
+						
+					  }
+					  else if((com_data.errcode=="1")||(com_data.errcode==1))
+					  {//console.log(com_data)
+						//xman:如果没算完，启动下一次延时检测
+						startCheckCountOver();
+					  }
+			    }
+		  })
+  }
+  
+  function drawAndShow(draw_data)
+  {
+	var p=draw_data.DataList[0].value;
+	//alert(names+"hahahha");
+	drawchart1(luap_chart,p);
+	drawchart2(gc_chart,p);
+	var min_k;
+	if(p!=""){
+	var test1=p.split('|');
+	var a1=test1[1].split(',');
+	//console.log(a1)
+	var x1=parseInt(a1.lastIndexOf("0"))+2;
+	//alert(x1)
+	min_k=x1+8;
+	//alert(min_k)
+	var url=draw_data.DataList[x1].value;
+	console.log(url)
+	$('#download').html("The species you selected ： "+names+"<br><br>The minimum K value for the common LAUPs in the DNA of the selected species ： "+min_k+'<br><br>Please click here to download and view the common LAUPs ： <a href="'+url+'" download="Common LAUPs">Click Here</a>');
+	$('#submit').html('<button type="button" class="btn btn-primary" onclick="showreload()">Submit</button>');
+	$('#notice').empty();
+  //alert(names);					
+	}
+	else{
+		$('#download').html("The species you selected ："+names+"<br><br>The minimum K value for the common LAUPs in the DNA of the selected species ：......<br><br>Please click here to download and view the common LAUPs ：.......");
+		}
+	names="";
+  }
+  
+    </script>
+</body>
+</html>

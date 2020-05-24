@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+   <head>
+       <meta charset="utf-8">
+   </head>
+   <body style="height: 100%; margin: 0">
+       <div id="container" style="height: 50%; width:70%"></div>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
+       <script type="text/javascript">
+var dom = document.getElementById("container");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+option = {
+        title: {
+            text: '2019-nCOV 确诊人数，变异率与应急心态',
+            top:10,
+            left:10
+        },
+        toolbox: {
+            show : true,
+            top:10,
+            right:10,
+            feature : {
+                mark : {show: true},
+                magicType : {show: true, type: ['line', 'bar']},
+                restore : {show: true},
+                saveAsImage : {show: true}
+            }
+        },
+        grid:{
+            top:60,
+            right:70,
+            bottom:80,
+            left:60
+        },
+        legend: {
+            top:32,
+            left:'center',
+            data:['新增确诊人数','变异率中位数','变异率平均数','应急心态']
+        },
+        calculable : true,
+        xAxis : [
+            {
+                type : 'category',
+                data : ["2020-01-23","2020-01-24","2020-01-25","2020-01-26","2020-01-27","2020-01-28","2020-01-29","2020-01-30","2020-01-31","2020-02-01","2020-02-02","2020-02-03","2020-02-04","2020-02-05","2020-02-06","2020-02-07","2020-02-08","2020-02-09","2020-02-10","2020-02-11","2020-02-12","2020-02-13","2020-02-14","2020-02-15","2020-02-16","2020-02-17","2020-02-18","2020-02-19","2020-02-20","2020-02-21","2020-02-22","2020-02-23","2020-02-24","2020-02-25","2020-02-26","2020-02-27","2020-02-28","2020-02-29","2020-03-01","2020-03-02","2020-03-03","2020-03-04","2020-03-05","2020-03-06","2020-03-07","2020-03-08","2020-03-09","2020-03-10","2020-03-11","2020-03-12","2020-03-13","2020-03-14","2020-03-15","2020-03-16","2020-03-17","2020-03-18","2020-03-19","2020-03-20","2020-03-21","2020-03-22","2020-03-23"],
+				axisLabel: {
+					interval:1, //坐标刻度之间的显示间隔，默认就可以了（默认是不重叠）
+					rotate:38   //调整数值改变倾斜的幅度（范围-90到90）
+				}
+			}
+        ],
+        yAxis : [
+            {
+                type: 'value',
+                name:"新\n增\n确\n诊\n人\n数\n",
+                nameLocation:"center",
+                nameGap:35,
+                nameRotate:0,
+                nameTextStyle:{
+                    fontSize: 16,
+                }
+            },
+            {
+                type: 'value',
+                name:"应\n急\n心\n态\n/\n变\n异\n率\n",
+                nameLocation:"center",
+                nameGap:35,
+                nameRotate:0,
+                nameTextStyle:{
+                    fontSize: 16,
+                },
+				axisLabel: {  
+					show: true,  
+					interval: 'auto',  
+					formatter: '{value}'  
+				} 
+            }
+        ],
+        series : [
+            {
+                name:'新增确诊人数',
+                type:'line',
+                smooth: true,
+                yAxisIndex: 0,
+                data:[95,279,486,670,803,2635,578,2055,1662,2089,4739,3086,3992,3733,3152,3523,2705,3016,2525,2032,373,15136,6463,2055,2102,1923,1777,409,459,475,1451,23,221,514,413,434,330,433,577,205,126,125,153,154,80,53,37,29,35,12,14,35,32,38,35,67,62,121,73,108,42]
+            },
+            {
+                name:'变异率中位数',
+                type:'line',
+                smooth: true,
+                yAxisIndex: 1,
+                data:[6.688292E-5,1.0032438E-4,6.688292E-5,1.672073E-4,1.672073E-4,1.3376585E-4,1.0032438E-4,1.0032438E-4,1.672073E-4,1.0032438E-4,1.0032438E-4,1.0032438E-4,6.688292E-5,1.3376585E-4,1.672073E-4,1.672073E-4,1.672073E-4,6.688292E-5,5.6850485E-4,2.3409023E-4,1.0032438E-4,1.0032438E-4,3.344146E-5,6.688292E-5,6.688292E-5,6.688292E-5,1.0032438E-4,3.344146E-5,1.672073E-4,1.672073E-4,1.672073E-4,3.344146E-5,2.3409023E-4,1.672073E-4,2.3409023E-4,1.672073E-4,1.672073E-4,2.0064876E-4,2.0064876E-4,2.3409023E-4,2.0064876E-4,2.0064876E-4,2.0064876E-4,2.0064876E-4,2.3409023E-4,2.3409023E-4,2.675317E-4,2.3409023E-4,2.0064876E-4,2.3409023E-4,2.0064876E-4]
+            },
+			{
+                name:'变异率平均数',
+                type:'line',
+                smooth: true,
+                yAxisIndex: 1,
+                data:[6.173808E-5,1.18565185E-4,9.076968E-5,1.9507519E-4,2.173695E-4,1.28621E-4,1.791507E-4,1.2447656E-4,1.5383071E-4,9.4054114E-5,1.226187E-4,1.4045414E-4,9.554704E-5,1.2038926E-4,1.60519E-4,1.4714242E-4,1.44913E-4,8.3603656E-5,4.0129756E-4,1.672073E-4,1.0032438E-4,1.0032438E-4,3.344146E-5,9.076969E-5,7.006783E-5,7.7172605E-5,1.11471534E-4,3.344146E-5,1.2819226E-4,1.3376583E-4,1.17045114E-4,1.672073E-5,2.9539957E-4,2.0064878E-4,2.2517252E-4,1.73179E-4,1.8727219E-4,2.126534E-4,2.0993808E-4,2.2480085E-4,2.1668228E-4,2.1359378E-4,2.1736945E-4,2.1597605E-4,2.1486136E-4,2.2294297E-4,2.4294229E-4,2.31164E-4,2.2129159E-4,2.3669592E-4,2.121904E-4]
+            },
+			{
+                name:'应急心态',
+                type:'line',
+                smooth: true,
+                yAxisIndex: 1,
+                data:[16,30,60,51,43,41,36,20,12,16,20,10]
+            },
+			
+        ]
+    };
+
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       </script>
+   </body>
+</html>

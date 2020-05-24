@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+   <head>
+       <meta charset="utf-8">
+   </head>
+   <body style="height: 100%; margin: 0">
+       <div id="container" style="height: 50%; width:70%"></div>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
+       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
+       <script type="text/javascript">
+var dom = document.getElementById("container");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+option = {
+        title: {
+            text: 'LAUPs CG 含量',
+            top:10,
+            left:10
+        },
+		tooltip: 
+		{
+			trigger: 'axis'
+		},
+        toolbox: {
+            show : true,
+            top:10,
+            right:10,
+            feature : {
+                mark : {show: true},
+                magicType : {show: true, type: ['line', 'bar']},
+                restore : {show: true},
+                saveAsImage : {show: true}
+            }
+        },
+        grid:{
+            top:60,
+            right:70,
+            bottom:80,
+            left:60
+        },
+        legend: {
+            top:32,
+            left:'center',
+            data:['2019-nCOV LAUPs','all Coronavirus LAUPs',]
+        },
+        calculable : true,
+        xAxis : [
+            {
+                type : 'category',
+                data : ['k=4','k=5','k=6','k=7','k=8','k=9','k=10','k=11','k=12','k=13']
+			}
+        ],
+        yAxis : [
+            {
+                type: 'value',
+                name:"LAUPs CG percentage",
+                nameLocation:"center",
+                nameGap:35,
+                nameTextStyle:{
+                    fontSize: 16,
+                },
+				axisLabel:{
+					formatter: function (value) {
+						return value*100+"%";
+					}
+				}
+            }
+        ],
+        series : [
+            {
+                name:'2019-nCOV LAUPs',
+                type:'line',
+                smooth: true,
+                yAxisIndex: 0,
+                data:[,,0.9090909091,0.7542348955,0.6362436046,0.5554808530,0.5175077957,0.5049312998,0.5013173762,0.5003449433]
+            },
+			{
+                name:'all Coronavirus LAUPs',
+                type:'line',
+                smooth: true,
+                yAxisIndex: 0,
+                data:[,,,,0.9166666667,0.8020331728,0.6741067212,0.5852814070,0.5331454876,0.5106230644]
+            }
+        ]
+    };
+
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       </script>
+   </body>
+</html>

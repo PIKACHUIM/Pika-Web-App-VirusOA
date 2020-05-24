@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+
+    <title>2019nCoVAS</title>
+    <meta name="keywords" content="2019-NcoV,transmission,genome,psychological stress,LAUP,k-mer,bioinformatics">
+    <meta name="description" content="Web service for 2019-NcoV transmission, genome, and psychological stress analysis">
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+
+    <link rel="shortcut icon" href="logo.png"> 
+    <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+	<script src="js/jquery.min.js"></script>
+
+
+    <script language="javascript" type="text/javascript">
+
+function write1(){
+		
+      htmlobj=$.ajax({url:"head.html",async:false});
+   var head=htmlobj.responseText;
+	document.write(head);
+
+
+ }
+
+write1();
+</script>
+
+
+	<!---<script src="js/head_2.js"></script>-->
+
+    
+    <style>
+        a.J_menuItem {
+            border-left: 2px solid rgba(34,36,38,.1);
+            /* border-right: 2px solid rgba(34,36,38,.1); */
+        }
+        a.dropdown-toggle {
+            border-left: 2px solid rgba(34,36,38,.1);
+            /* border-right: 2px solid rgba(34,36,38,.1); */
+        }
+        .navbar-header {
+            width: auto;
+        }
+        #page-wrapper .gray-bg {
+            margin-left: 10em;
+            margin-right: 10em;
+        }
+        #wrapper {
+            width: 100%;
+              overflow-x: hidden;
+            background-color: #ffffff;
+        }
+		#d
+		{
+	width: 80%;
+	boder: 1px solid #000;
+	height: 800px;
+	margin: auto;
+	padding: 0px;
+		}
+		#d1{
+	width: 80%;
+	height: 100px;
+	boder: 1px solid #000;
+	margin-top: 0;
+	margin-right: auto;
+	margin-bottom: 200;
+	margin-left: auto;
+	padding-bottom: 200px;
+		}
+
+		#d2
+		{
+			width:30%;
+			height:100px;
+			float:left;
+			boder:1px solid #000;
+			margin-light:10px;
+			margin-left:10px
+		}
+		#d3
+		{
+			width:30%;
+			height:100px;
+			boder:1px solid #000;
+			float:right;
+			margin-right:10px;
+		}
+    </style>
+
+</head>
+
+    
+<body class="gray-bg">
+	
+        <div>
+            <ul class="breadcrumb" style="margin:5px 200px;font:bold 20px Georgia, serif">
+                <li><a href="home_1.html">Home</a></li>
+            </ul>
+        </div>
+
+       <div id="container" style="height: 50%;margin:0 auto; width:70%"></div>
+        
+    <div class="wrapper wrapper-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10" style="left:-8%">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title" style="width: 1340px; height: 200px;">
+                                   <h2>Overview</h2>
+								   <p>The COVID-19 has spread rapidly around the world and poses serious threat to human health[1, 2]. Many previous studies[3-7] have analyzed the whole genome, constructed phylogenetic trees of COVID-19 and predicted the transmission of the epidemic, which is very important for phylogenetic analysis, host prediction and disease transmission control of COVID-19. However, the genome sequence characteristics of COVID-19 still need further investigations, and the transmission prediction models need to be improved. In addition, it is also very important to study the mental stress state of the population under the epidemic situation. Therefore, we develop such an online database and webserver site that integrated feature analysis of COVID-19 genomic subsequence, comparative analysis of transmission prediction models of COVID-19, and psychological stress assessment under the epidemic situation.</p>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+            <div class="row">
+                <div class="col-md-5" style="float:left;left:-8%">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title" style="width: 650px;height: 225px;">
+									<h2>传播预测模型对比分析</h2>
+									<p>平台的第一个模块为病毒传播预测模型对比分析。目前对新冠病毒传播预测的相关研究，预测模型大多为SIR和SEIR。这两种模型能对传染病进行传播速度、空间范围的分析，但是两者都未考虑对疑似病人和确诊病例进行隔离的情况，同时模型中的传染强度、感染暴露时长等参数的选择大多依赖主观，这导致R0值以及预测结果都存在很大偏差。为此我们在SEIR模型中引入疑似病人隔离的因素，并引入最小二乘法和马尔科夫链蒙特卡洛方法，利用现有数据对感染强度和感染暴露时长等未知参数进行估计，提出一种改进的模型以提高预测准确率。同时，我们开发了SIR、SEIR以及改进后的SEIR这三种模型的可视化对比分析功能。</p>
+								</div>
+                            </div>
+                        </div>
+                <div class="col-md-5" style="float:right;right:8%">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title"style="width: 655px;height: 225px;">
+									<h2>基因组子序列特征分析</h2>
+									<p>第二个模块为新冠病毒基因组子序列特征分析。k-mer子序列频数分布是一个重要且基础的基因组序列特征，是基因组比较、系统进化分析等研究中的重要的初始步骤。但是大部分基因组子序列研究只计算了出现的排列而未考虑LAUPs（谱系相关的未出现序列排列），并且目前还没有开发出新冠病毒子序列分析的在线服务。为此平台首先自动获取全部的新冠病毒基因组数据，然后进行多基因组的k-mer统计，并且计算出多基因组中的重复序列。其次平台还可计算每个新冠病毒基因组的最小LAUP以及所有基因组的最短共同LAUPs。同时，平台还将提供在线MOTIF发现服务用于寻找重复子序列和共同LAUPs序列的频繁排列模式。这些子序列分析的结果都提供下载，可为进一步开展新冠病毒比较基因组学研究、新冠病毒系统发生树构建提供良好的数据基础。</p>
+								</div>
+                             
+                            </div>
+                        </div>
+                     </div> 
+            <div class="row">
+                <div class="col-md-5" style="float:left;left:-8%">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title" style="width: 650px;height: 200px;">
+									<h2>心理应激状态评估</h2>
+									<p>第三个模块为新冠病毒疫情下的心理应激状态评估。疫情状态下人群在心理层面的精神应激反应也是新冠病毒研究的重点之一。但是目前面向新冠病毒疫情相关话题的情感词典尚未建立，并且大部分情感词典分析存在未区分情感词之间强弱的问题。为此，我们基于词汇语义相似度计算方法，构建面向新冠肺炎疫情话题领域的情感词典；采用统计规则和机器学习模型进行观点识别，对微博评论文本进行预处理，并采用平滑算法、语法规则等相结合，结合微博评论语句情感计算公式，对评论句的情感倾向进行有效分类。最终得到不同时间阶段的情感分类和心理状态评估建议，以更好的对疫情期间公众应激状态进行评估和干预。</p>
+                                </div>
+                             
+                            </div>
+                        </div>
+                <div class="col-md-5" style="float:right;right:8%">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title" style="width: 650px;height: 200px;">
+   
+                                </div>
+                             
+                            </div>
+                        </div>
+                     </div> 
+          
+
+                </div>
+
+            </div>
+
+            
+     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+      <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+      <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
+      <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
+      <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
+      <script type="text/javascript">
+
+var dom = document.getElementById("container");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+option = {
+        title: {
+            text: '2019-nCOV 确诊人数，变异率与应急心态',
+            top:10,
+            left:10
+        },
+        toolbox: {
+            show : true,
+            top:10,
+            right:10,
+            feature : {
+                mark : {show: true},
+                magicType : {show: true, type: ['line', 'bar']},
+                restore : {show: true},
+                saveAsImage : {show: true}
+            }
+        },
+        grid:{
+            top:60,
+            right:70,
+            bottom:80,
+            left:60
+        },
+        legend: {
+            top:32,
+            left:'center',
+            data:['新增确诊人数','变异率中位数','变异率平均数','应急心态']
+        },
+        calculable : true,
+        xAxis : [
+            {
+                type : 'category',
+                data : ["2020-01-23","2020-01-24","2020-01-25","2020-01-26","2020-01-27","2020-01-28","2020-01-29","2020-01-30","2020-01-31","2020-02-01","2020-02-02","2020-02-03","2020-02-04","2020-02-05","2020-02-06","2020-02-07","2020-02-08","2020-02-09","2020-02-10","2020-02-11","2020-02-12","2020-02-13","2020-02-14","2020-02-15","2020-02-16","2020-02-17","2020-02-18","2020-02-19","2020-02-20","2020-02-21","2020-02-22","2020-02-23","2020-02-24","2020-02-25","2020-02-26","2020-02-27","2020-02-28","2020-02-29","2020-03-01","2020-03-02","2020-03-03","2020-03-04","2020-03-05","2020-03-06","2020-03-07","2020-03-08","2020-03-09","2020-03-10","2020-03-11","2020-03-12","2020-03-13","2020-03-14","2020-03-15","2020-03-16","2020-03-17","2020-03-18","2020-03-19","2020-03-20","2020-03-21","2020-03-22","2020-03-23"],
+				axisLabel: {
+					interval:1, //坐标刻度之间的显示间隔，默认就可以了（默认是不重叠）
+					rotate:38   //调整数值改变倾斜的幅度（范围-90到90）
+				}
+			}
+        ],
+        yAxis : [
+            {
+                type: 'value',
+                name:"新\n增\n确\n诊\n人\n数\n",
+                nameLocation:"center",
+                nameGap:44,
+                nameRotate:0,
+                nameTextStyle:{
+                    fontSize: 16,
+                }
+            },
+            {
+                type: 'value',
+                name:"应\n急\n心\n态\n/\n变\n异\n率\n",
+                nameLocation:"center",
+                nameGap:35,
+                nameRotate:0,
+                nameTextStyle:{
+                    fontSize: 16,
+                },
+				axisLabel: {  
+					show: true,  
+					interval: 'auto',  
+					formatter: '{value}'  
+				} 
+            }
+        ],
+        series : [
+            {
+                name:'新增确诊人数',
+                type:'line',
+                smooth: true,
+                yAxisIndex: 0,
+                data:[95,279,486,670,803,2635,578,2055,1662,2089,4739,3086,3992,3733,3152,3523,2705,3016,2525,2032,373,15136,6463,2055,2102,1923,1777,409,459,475,1451,23,221,514,413,434,330,433,577,205,126,125,153,154,80,53,37,29,35,12,14,35,32,38,35,67,62,121,73,108,42]
+            },
+            {
+                name:'变异率中位数',
+                type:'line',
+                smooth: true,
+                yAxisIndex: 1,
+                data:[6.688292E-5,1.0032438E-4,6.688292E-5,1.672073E-4,1.672073E-4,1.3376585E-4,1.0032438E-4,1.0032438E-4,1.672073E-4,1.0032438E-4,1.0032438E-4,1.0032438E-4,6.688292E-5,1.3376585E-4,1.672073E-4,1.672073E-4,1.672073E-4,6.688292E-5,5.6850485E-4,2.3409023E-4,1.0032438E-4,1.0032438E-4,3.344146E-5,6.688292E-5,6.688292E-5,6.688292E-5,1.0032438E-4,3.344146E-5,1.672073E-4,1.672073E-4,1.672073E-4,3.344146E-5,2.3409023E-4,1.672073E-4,2.3409023E-4,1.672073E-4,1.672073E-4,2.0064876E-4,2.0064876E-4,2.3409023E-4,2.0064876E-4,2.0064876E-4,2.0064876E-4,2.0064876E-4,2.3409023E-4,2.3409023E-4,2.675317E-4,2.3409023E-4,2.0064876E-4,2.3409023E-4,2.0064876E-4]
+            },
+			{
+                name:'变异率平均数',
+                type:'line',
+                smooth: true,
+                yAxisIndex: 1,
+                data:[6.173808E-5,1.18565185E-4,9.076968E-5,1.9507519E-4,2.173695E-4,1.28621E-4,1.791507E-4,1.2447656E-4,1.5383071E-4,9.4054114E-5,1.226187E-4,1.4045414E-4,9.554704E-5,1.2038926E-4,1.60519E-4,1.4714242E-4,1.44913E-4,8.3603656E-5,4.0129756E-4,1.672073E-4,1.0032438E-4,1.0032438E-4,3.344146E-5,9.076969E-5,7.006783E-5,7.7172605E-5,1.11471534E-4,3.344146E-5,1.2819226E-4,1.3376583E-4,1.17045114E-4,1.672073E-5,2.9539957E-4,2.0064878E-4,2.2517252E-4,1.73179E-4,1.8727219E-4,2.126534E-4,2.0993808E-4,2.2480085E-4,2.1668228E-4,2.1359378E-4,2.1736945E-4,2.1597605E-4,2.1486136E-4,2.2294297E-4,2.4294229E-4,2.31164E-4,2.2129159E-4,2.3669592E-4,2.121904E-4]
+            },
+			{
+                name:'应急心态',
+                type:'line',
+                smooth: true,
+                yAxisIndex: 1,
+                data:[16,30,60,51,43,41,36,20,12,16,20,10]
+            },
+			
+        ]
+    };
+
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       </script>
+ 
+
+
+    <script language="javascript" type="text/javascript">
+
+function write2(){
+		
+      htmlobj=$.ajax({url:"tail.html",async:false});
+   var tail=htmlobj.responseText;
+
+document.write(tail);
+ }
+
+write2();
+</script>
+
+<!--<script src="js/tail_2.js"></script>-->
+
+</body>
+</html>
+
+
+

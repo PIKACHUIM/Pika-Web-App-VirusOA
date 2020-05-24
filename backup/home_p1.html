@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>CGIDLA</title>
+    <meta name="keywords" content="LAUP,CpG isl,k-mer,bioinformatics">
+    <meta name="description"
+          content="WA web server for CpG Island study:CpG Island related density and LAUPs (Lineage-associated Underrepresented Permutations) analysis">
+    <link rel="shortcut icon" href="logo.png">
+    <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+    <script src="js/newhead.js"></script>
+    <link rel="icon"          type="image/x-icon" href="./favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
+    <link rel="stylesheet"    href="assets/css/font-awesome.min.css">
+    <link rel="stylesheet"    href="assets/css/googleapis.css">
+    <script src="./assets/js/require.min.js"></script>
+    <script>requirejs.config({baseUrl: '.'});</script>
+    <link  href="./assets/plugins/charts-c3/plugin.css" rel="stylesheet" />
+    <script src="./assets/plugins/charts-c3/plugin.js"></script>
+    <link  href="./assets/plugins/maps-google/plugin.css" rel="stylesheet" />
+    <script src="./assets/plugins/maps-google/plugin.js"></script>
+    <script src="./assets/plugins/input-mask/plugin.js"></script>
+    <style>.a-right{border: 1px solid #000000;box-sizing: border-box;border-radius: 15px;!important;}</style>
+    <style>.a-ints{margin:5% 5% 5% 5%;}</style>
+</head>
+
+<body class="gray-bg ">
+<div class="page ">
+    <!------------------------------------------------------网站内容------------------------------------------------------->
+    <div class="my-3 my-md-5">
+        <br />
+        <div class="container a-right ">
+            <div class="page-header ">
+                <h1 class="page-title">新冠疫情预测</h1>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 order-lg-1 mb-4">
+                    <a href="" class="btn btn-block btn-primary mb-6">
+                        <i class="fe fe-github mr-2"></i>
+                    </a>
+                    <div class="list-group list-group-transparent mb-0">
+                        <a href="../docs/index.html" class="list-group-item list-group-item-action active"><span class="icon mr-3"><i class="fe fe-flag"></i></span>内容分类</a>
+                    </div>
+                    <div class="list-group list-group-transparent mb-0">
+                        <a href="./home_p1.html" class="list-group-item list-group-item-action"><span class="icon mr-3"><i class="fe fe-alert-triangle"></i></span>疫情曲线</a>
+                        <a href="./home_p2.html" class="list-group-item list-group-item-action"><span class="icon mr-3"><i class="fe fe-user"></i></span>自定义模型</a>
+                        <a href="./home_p3.html" class="list-group-item list-group-item-action"><span class="icon mr-3"><i class="fe fe-plus-square"></i></span>模拟拟合</a>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <!-------------------------------------------------------------------------------------------------------------------------------------------------------------->
+                    <div class="card a-right">
+                        <div class="card-header a-ints">
+                            <h2 class="card-title">参数估计</h2>
+                        </div>
+                        <div class="card-body a-ints">
+                            <div class="form-label">参数估计</div>
+                            <div class="table-responsive">
+                                <table class="table mb-0">
+                                    <thead>
+                                    <tr>
+                                        <th>开始时间</th>
+                                        <th>结束时间</th>
+                                        <th>预测时长</th>
+                                        <th>预测省份</th>
+                                    </tr>
+                                    </thead>
+                                    <tr>
+                                        <td class="pl-0">
+                                            <label for="meeting"></label><input id="meeting" type="date" value="2020-01-01" max="2021-01-01"/>
+                                        </td>
+                                        <td>
+                                            <label for="meeting"></label><input id="meeting" type="date" value="2020-06-01" max="2021-01-01"/>
+                                        </td>
+                                        <td>
+                                            <select class="custom-select">
+                                                <option value="每天">每天</option>
+                                                <option value="两天">两天</option>
+                                                <option value="一周">一周</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select class="custom-select">
+                                                <option value="北京">北京市</option>
+                                                <option value="浙江省">浙江省</option>
+                                                <option value="天津市">天津市</option>
+                                                <option value="安徽省">安徽省</option>
+                                                <option value="上海市">上海市</option>
+                                                <option value="福建省">福建省</option>
+                                                <option value="重庆市">重庆市</option>
+                                                <option value="江西省">江西省</option>
+                                                <option value="山东省">山东省</option>
+                                                <option value="河南省">河南省</option>
+                                                <option value="湖北省">湖北省</option>
+                                                <option value="湖南省">湖南省</option>
+                                                <option value="广东省">广东省</option>
+                                                <option value="海南省">海南省</option>
+                                                <option value="山西省">山西省</option>
+                                                <option value="青海省">青海省</option>
+                                                <option value="江苏省">江苏省</option>
+                                                <option value="辽宁省">辽宁省</option>
+                                                <option value="吉林省">吉林省</option>
+                                                <option value="台湾省">台湾省</option>
+                                                <option value="河北省">河北省</option>
+                                                <option value="贵州省">贵州省</option>
+                                                <option value="四川省">四川省</option>
+                                                <option value="云南省">云南省</option>
+                                                <option value="陕西省">陕西省</option>
+                                                <option value="甘肃省">甘肃省</option>
+                                                <option value="黑龙江省">黑龙江省</option>
+                                                <option value="香港特别行政区">香港特别行政区</option>
+                                                <option value="澳门特别行政区">澳门特别行政区</option>
+                                                <option value="广西壮族自治区">广西壮族自治区</option>
+                                                <option value="宁夏回族自治区">宁夏回族自治区</option>
+                                                <option value="新疆维吾尔自治区">新疆维吾尔自治区</option>
+                                                <option value="内蒙古自治区">内蒙古自治区</option>
+                                                <option value="西藏自治区">西藏自治区</option>
+                                        </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card-footer text-right a-ints">
+                            <button type="submit" style="background-color:#ff0000" class="btn btn-primary">清空</button>
+                            <button type="submit" class="btn btn-primary">预测</button>
+                        </div>
+                    </div>
+                <br /><br /><br /><br />
+                    <!-------------------------------------------------------------------------------------------------------------------------------------------------------------->
+                    <div class="card a-right">
+                        <h2 class="card-title a-ints">预测结果</h2>
+                        <br />
+                        <div id="container1" style="height: 600px"></div>
+                        <br /><br />
+                    </div>
+                    <!-------------------------------------------------------------------------------------------------------------------------------------------------------------->
+                    <br /><br /><br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+<!-------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<div class="card">
+    <div id="container1" style="height: 600px"></div>
+</div>
+
+<!-------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<script type="text/javascript">
+    var dom = document.getElementById("container1");
+    var myChart = echarts.init(dom);
+    var app = {};
+    option = null;
+    option = {
+    title: {
+        text: '疫情曲线',
+        subtext: '2019nCoVAS'
+    },
+    legend: {
+        data: ['确诊人数', 'SEIR1月20号至1月26日预测结果','SEIR1月20号至2月10日预测结果']
+    },
+    tooltip: {
+        trigger: 'item',
+        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        },
+
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ['2020-01-20', '2020-01-21', '2020-01-22', '2020-01-23', '2020-01-24', '2020-01-25', '2020-01-26', '2020-01-27', '2020-01-28', '2020-01-29', '2020-01-30', '2020-01-31', '2020-02-01', '2020-02-02', '2020-02-03', '2020-02-04', '2020-02-05', '2020-02-06', '2020-02-07', '2020-02-08', '2020-02-09', '2020-02-10', '2020-02-11', '2020-02-12', '2020-02-13', '2020-02-14', '2020-02-15', '2020-02-16', '2020-02-17', '2020-02-18', '2020-02-19', '2020-02-20', '2020-02-21', '2020-02-22', '2020-02-23', '2020-02-24', '2020-02-25', '2020-02-26', '2020-02-27', '2020-02-28', '2020-02-29', '2020-03-01', '2020-03-02', '2020-03-03', '2020-03-04', '2020-03-05', '2020-03-06', '2020-03-07', '2020-03-08', '2020-03-09', '2020-03-10', '2020-03-11', '2020-03-12', '2020-03-13', '2020-03-14', '2020-03-15', '2020-03-16', '2020-03-17', '2020-03-18', '2020-03-19', '2020-03-20', '2020-03-21', '2020-03-22', '2020-03-23', '2020-03-24', '2020-03-25', '2020-03-26', '2020-03-27', '2020-03-28', '2020-03-29', '2020-03-30', '2020-03-31', '2020-04-01', '2020-04-02', '2020-04-03', '2020-04-04', '2020-04-05', '2020-04-06', '2020-04-07', '2020-04-08', '2020-04-09', '2020-04-10', '2020-04-11', '2020-04-12', '2020-04-13', '2020-04-14', '2020-04-15', '2020-04-16', '2020-04-17', '2020-04-18', '2020-04-19', '2020-04-20']
+    },
+    yAxis: {
+        type: 'value',
+        axisLabel: {
+            formatter: '{value} 人'
+        },
+    },
+
+    series: [
+{
+        name: '确诊人数',
+        type: 'line',
+        data: [260, 406, 526, 771, 1208, 1870, 2613, 4349, 5739, 7417, 9308, 11289, 13748, 16369, 19381, 22942, 26302, 28985, 31774, 33738, 35982, 37626, 38800, 51860, 55748, 56873, 57416, 57934, 58016, 57805, 56727, 55389, 53284, 51411, 49824, 47672, 45604, 43258, 39919, 37414, 35329, 32652, 30004, 27433, 25352, 23784, 22177, 20533, 19016, 17721, 16145, 14831, 13526, 12094, 10734, 9898, 8976, 8056, 7263, 6569, 6013, 5549, 5120, 4735, 4287, 3947, 3460, 3128, 2691, 2396, 2161, 2004, 1863, 1727, 1562, 1375, 1299, 1242, 1190, 1160, 1116, 1089, 1138, 1156, 1170, 1137, 1107, 1081, 1058, 1041, 1031, 1003, 1005, 959, 915, 838, 801, 723, 648, 647, 619, 599, 557, 531, 481, 395, 339, 295, 260, 208]
+}, 
+{
+        name: 'SEIR1月20号至1月26日预测结果',
+        type: 'line',
+        data: [207, 244, 315, 422, 560, 723, 903, 1088, 1267, 1435, 1590, 1729, 1853, 1965, 2063, 2150, 2226, 2292, 2349, 2398, 2439, 2473, 2501, 2523, 2539, 2550, 2557, 2560, 2558, 2554, 2546, 2536, 2523, 2507, 2490, 2470, 2449, 2427, 2403, 2378, 2351, 2324, 2297, 2268, 2239, 2209, 2179, 2149, 2118, 2087, 2056, 2025, 1994, 1963, 1932, 1901, 1871, 1840, 1810, 1780, 1750, 1720, 1690, 1661, 1632, 1604, 1576, 1548, 1520, 1493, 1467, 1440, 1414, 1388, 1363, 1338, 1314, 1289, 1266, 1242, 1219, 1196, 1174, 1152, 1131, 1109, 1089, 1068, 1048, 1028, 1009, 990, 971, 952, 934, 917, 899, 882, 865, 849, 832, 817, 801, 786, 771, 756, 741, 727, 713, 699, 686, 673, 660, 647, 635, 622, 610, 599, 587, 576, 565, 554, 543, 533, 522, 512, 502, 493, 483, 474, 464, 456, 447, 438, 430, 421, 413, 405, 397, 390, 382, 375, 367, 360, 353, 346, 340, 333, 327, 320, 314, 308, 302, 296, 290, 285, 279, 274, 269, 263, 258, 253, 248, 243, 239, 234, 230, 225, 221, 216, 212, 208, 204, 200, 196, 192, 189, 185, 181, 178, 174, 171, 168, 164, 161, 158, 155, 152, 149, 146, 143, 141, 138, 135, 133, 130, 127, 125, 123, 120, 118, 116, 113, 111, 109, 107, 105, 103, 101, 99, 97, 95, 93, 91, 89, 88, 86, 84, 83, 81, 79, 78, 76, 75, 73, 72, 71, 69, 68, 67, 65, 64, 63, 62, 60, 59, 58, 57, 56, 55, 54, 53, 52, 51, 50, 49, 48, 47, 46, 45, 44]
+//感染系数3.016838,潜伏者转换为感染者的比例0    .    0    1    9    5    6    7,感染者治愈率 0    .    0    7    4    0    1    7 ，初始S    0    =    1    6    3    4    2    0    5    .    6    7    ;    E    0    =    -    0    .    0    5    ;    I    0    =    -    0    .    0    7    
+}, 
+{
+        name: 'SEIR1月20号至2月10日预测结果',
+        type: 'line',
+        data: [6011, 7685, 9677, 11979, 14558, 17358, 20312, 23350, 26414, 29458, 32455, 35388, 38250, 41036, 43748, 46385, 48949, 51441, 53863, 56216, 58501, 60720, 62874, 64964, 66993, 68960, 70867, 72716, 74507, 76242, 77923, 79549, 81123, 82644, 84116, 85537, 86910, 88236, 89515, 90749, 91938, 93083, 94186, 95247, 96267, 97247, 98188, 99091, 99956, 100785, 101578, 102335, 103058, 103748, 104405, 105030, 105624, 106187, 106720, 107223, 107698, 108145, 108565, 108958, 109325, 109666, 109983, 110275, 110543, 110788, 111011, 111211, 111390, 111548, 111685, 111802, 111900, 111978, 112038, 112080, 112104, 112110, 112100, 112074, 112031, 111973, 111899, 111811, 111709, 111592, 111462, 111318, 111162, 110992, 110811, 110618, 110413, 110197, 109970, 109732, 109484, 109226, 108958, 108681, 108394, 108099, 107795, 107482, 107162, 106833, 106497, 106154, 105803, 105446, 105082, 104711, 104334, 103951, 103562, 103168, 102768, 102363, 101953, 101539, 101119, 100695, 100267, 99834, 99398, 98958, 98514, 98067, 97616, 97162, 96706, 96246, 95783, 95318, 94851, 94381, 93909, 93435, 92959, 92481, 92001, 91520, 91037, 90553, 90068, 89581, 89093, 88605, 88115, 87625, 87134, 86642, 86150, 85658, 85165, 84672, 84178, 83685, 83192, 82698, 82205, 81712, 81219, 80727, 80235, 79743, 79252, 78761, 78271, 77782, 77294, 76806, 76319, 75833, 75348, 74865, 74382, 73900, 73419, 72940, 72461, 71984, 71509, 71034, 70561, 70090, 69620, 69151, 68684, 68219, 67755, 67292, 66831, 66372, 65915, 65459, 65005, 64553, 64103, 63654, 63207, 62762, 62319, 61878, 61439, 61001, 60566, 60133, 59701, 59272, 58844, 58419, 57995, 57574, 57154, 56737, 56322, 55909, 55497, 55088, 54682, 54277, 53874, 53474, 53075, 52679, 52285, 51893, 51503]
+//感染系数1    0    .    9    3    3    5    4    6 ,潜伏者转换为感染者的比例0    .    0    1    6    2    0    4  ,感染者治愈率 0    .    0    0    9    2    9    7，初始 S    0    =    4    1    3    4    1    1    .    1    7    ;    E    0    =    5    9    .    8    2    ;    I    0    =    -    0    .    7    8    
+}, 
+
+    ]
+
+};;
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       
+</script>
+</body>
+</html>

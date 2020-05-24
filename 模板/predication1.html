@@ -1,0 +1,399 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+
+    <title>2019nCoVAS</title>
+    <meta name="keywords" content="2019-NcoV,transmission,genome,psychological stress,LAUP,k-mer,bioinformatics">
+    <meta name="description"
+        content="Web service for 2019-NcoV transmission, genome, and psychological stress analysis">
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+
+    <link rel="shortcut icon" href="logo.png">
+    <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+    <script src="js/jquery.min.js"></script>
+    <style>.a-right{border: 1px solid #000000;box-sizing: border-box;border-radius: 15px;!important;}</style>
+    <style>.a-ints{margin:5% 5% 5% 5%;width:30%;}</style>
+
+    <script language="javascript" type="text/javascript">
+
+        function write1() {
+
+            htmlobj = $.ajax({ url: "head.html", async: false });
+            var head = htmlobj.responseText;
+            document.write(head);
+
+
+        }
+
+        write1();
+    </script>
+
+
+    <!---<script src="js/head_2.js"></script>-->
+
+
+    <style>
+        a.J_menuItem {
+            border-left: 2px solid rgba(34, 36, 38, .1);
+            /* border-right: 2px solid rgba(34,36,38,.1); */
+        }
+
+        a.dropdown-toggle {
+            border-left: 2px solid rgba(34, 36, 38, .1);
+            /* border-right: 2px solid rgba(34,36,38,.1); */
+        }
+
+        .navbar-header {
+            width: auto;
+        }
+
+        #page-wrapper .gray-bg {
+            margin-left: 10em;
+            margin-right: 10em;
+        }
+
+        #wrapper {
+            width: 100%;
+            overflow-x: hidden;
+            background-color: #ffffff;
+        }
+
+        #d {
+            width: 80%;
+            boder: 1px solid #000;
+            height: 800px;
+            margin: auto;
+            padding: 0px;
+        }
+
+        #d1 {
+            width: 80%;
+            height: 100px;
+            boder: 1px solid #000;
+            margin-top: 0;
+            margin-right: auto;
+            margin-bottom: 200;
+            margin-left: auto;
+            padding-bottom: 200px;
+        }
+
+        #d2 {
+            width: 30%;
+            height: 100px;
+            float: left;
+            boder: 1px solid #000;
+            margin-light: 10px;
+            margin-left: 10px
+        }
+
+        #d3 {
+            width: 30%;
+            height: 100px;
+            boder: 1px solid #000;
+            float: right;
+            margin-right: 10px;
+        }
+    </style>
+
+</head>
+
+
+
+<body class="gray-bg">
+
+    <script type="text/javascript">
+
+        function getTime() {
+
+            var dateObj = new Date();
+
+            var year = dateObj.getFullYear();
+
+            var month = dateObj.getMonth() + 1;
+
+            var date = dateObj.getDate();
+
+            if (month < 10) {
+                month = "0" + month;
+            }
+
+            if (date < 10) {
+                date = "0" + date;
+            }
+
+            var newDate = year + '-' + month + '-' + date;
+            return newDate;
+            document.getElementById("date1").innerHTML = newDate;//在div中写入时间
+        }
+
+    </script>
+
+    <div class="wrapper wrapper-content">
+        <div>
+            <ul class="breadcrumb" style="margin:5px 200px;font:bold 20px Georgia, serif">
+                <li><a href="#">首页</a></li>
+                <li class="active">参数估计</li>
+            </ul>
+        </div>
+
+        <div style="border-style: solid;border-width:1px;margin: 5px 200px;padding:5px 15px;">
+			<div id="container" style="height:300%;margin:0 auto;width:100%"></div>
+            <div
+                style="border-style:dotted;border-radius:16px;border-width:1px;margin: 15px 10px;padding:25px;font-size:large">
+                <div style="margin: 10px 5px 15px">
+                    <form>
+                        <div class="row form-inline row">
+                            <div class='col-sm-6'>
+                                <div class="form-group">
+                                    <label for="formGroupInputLarge">选择开始日期：</label>
+                                    <!--指定 date标记-->
+                                    <div class='input-group date col-xs-6' id='date_start'>
+                                        <input type='text' class="form-control" readonly="readonly" />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class='col-sm-6'>
+                                <div class="form-group">
+                                    <label>选择结束时间：</label>
+                                    <!--指定 date标记-->
+                                    <div class='input-group date col-xs-6' id='date_end'>
+                                        <input type='text' class="form-control" readonly="readonly" />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-primary" onclick=""
+                                    style="float:bottom;margin:10px 20px">日期全选</button>
+                            </div>
+                        </div>
+						
+
+						<div class='col-sm-6'>
+                                <div class="form-group">
+                                    <label for="formGroupInputLarge">预测模型：</label>
+                                    <div class='input-group date col-xs-6' id='model'>
+                                                                            <select class="custom-select">
+                                        <option value="模型1">模型1</option>
+                                        <option value="模型2">模型2</option>
+                                        <option value="模型3">模型3</option>
+                                    </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='col-sm-6'>
+                                <div class="form-group">
+                                    <label for="formGroupInputLarge">调参方法</label>
+                                    <div class='input-group date col-xs-6' id='sigma'>
+                                        <select class="custom-select">
+                                        <option value="模型1">方法1</option>
+                                        <option value="模型2">方法2</option>
+                                        <option value="模型3">方法3</option>
+                                    </select>
+                                    </div>
+                                </div>
+                            </div>
+							                    <div class='col-sm-6'>
+                                <div class="form-group">
+                                    <label for="formGroupInputLarge">训练批次</label>
+                                    <div class='input-group date col-xs-6' id='gamma'>
+                                        <input type='text' class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='col-sm-6'>
+                                <div class="form-group">
+                                    <label for="formGroupInputLarge">误差</label>
+                                    <div class='input-group date col-xs-6' id='alpha'>
+                                        <input type='text' class="form-control" />
+                                    </div>
+                                </div>
+                            </div>						
+						
+						
+                    </form>
+                </div>
+                <button type="button" class="btn btn-primary" onclick=""
+                    style="float:bottom;margin:10px 20px">提交</button>
+                <button type="button" class="btn btn-primary" onclick=""
+                    style="float:bottom;margin:10px 20px">重置</button>
+                <i class="glyphicon glyphicon-question-sign" style="font-size:15px;float:bottom;margin:20px 20px">
+                    帮助</i>
+            </div>
+                    <div class="card a-right" style="height:440px">
+                        
+                        <br />
+                        <img class="a-ints" style="float: left;"  src="assets/images/graph/1.png" />
+						<img class="a-ints" style="float: right;" src="assets/images/graph/2.png" />
+						<img class="a-ints" style="float: left;"  src="assets/images/graph/3.png" />
+						<img class="a-ints" style="float: right;" src="assets/images/graph/4.png" />
+                        <br /><br />
+                    </div>
+            
+
+            <div style="margin:10px 30px">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <p>介绍数据来源和统计办法,并且连接到akshare</p>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
+
+
+    <script type="text/javascript" src="js/jquery-1.8.3.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="js/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+
+   <script type="text/javascript">
+    var dom = document.getElementById("container");
+    var myChart = echarts.init(dom);
+    var app = {};
+    option = null;
+    option = {
+    title: {
+        text: '疫情曲线',
+        subtext: '2019nCoVAS'
+    },
+    legend: {
+        data: ['确诊人数', 'SEIR1月20号至1月26日预测结果','SEIR1月20号至2月10日预测结果']
+    },
+    tooltip: {
+        trigger: 'item',
+        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        },
+
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ['2020-01-20', '2020-01-21', '2020-01-22', '2020-01-23', '2020-01-24', '2020-01-25', '2020-01-26', '2020-01-27', '2020-01-28', '2020-01-29', '2020-01-30', '2020-01-31', '2020-02-01', '2020-02-02', '2020-02-03', '2020-02-04', '2020-02-05', '2020-02-06', '2020-02-07', '2020-02-08', '2020-02-09', '2020-02-10', '2020-02-11', '2020-02-12', '2020-02-13', '2020-02-14', '2020-02-15', '2020-02-16', '2020-02-17', '2020-02-18', '2020-02-19', '2020-02-20', '2020-02-21', '2020-02-22', '2020-02-23', '2020-02-24', '2020-02-25', '2020-02-26', '2020-02-27', '2020-02-28', '2020-02-29', '2020-03-01', '2020-03-02', '2020-03-03', '2020-03-04', '2020-03-05', '2020-03-06', '2020-03-07', '2020-03-08', '2020-03-09', '2020-03-10', '2020-03-11', '2020-03-12', '2020-03-13', '2020-03-14', '2020-03-15', '2020-03-16', '2020-03-17', '2020-03-18', '2020-03-19', '2020-03-20', '2020-03-21', '2020-03-22', '2020-03-23', '2020-03-24', '2020-03-25', '2020-03-26', '2020-03-27', '2020-03-28', '2020-03-29', '2020-03-30', '2020-03-31', '2020-04-01', '2020-04-02', '2020-04-03', '2020-04-04', '2020-04-05', '2020-04-06', '2020-04-07', '2020-04-08', '2020-04-09', '2020-04-10', '2020-04-11', '2020-04-12', '2020-04-13', '2020-04-14', '2020-04-15', '2020-04-16', '2020-04-17', '2020-04-18', '2020-04-19', '2020-04-20']
+    },
+    yAxis: {
+        type: 'value',
+        axisLabel: {
+            formatter: '{value} 人'
+        },
+    },
+
+    series: [
+{
+        name: '确诊人数',
+        type: 'line',
+        data: [260, 406, 526, 771, 1208, 1870, 2613, 4349, 5739, 7417, 9308, 11289, 13748, 16369, 19381, 22942, 26302, 28985, 31774, 33738, 35982, 37626, 38800, 51860, 55748, 56873, 57416, 57934, 58016, 57805, 56727, 55389, 53284, 51411, 49824, 47672, 45604, 43258, 39919, 37414, 35329, 32652, 30004, 27433, 25352, 23784, 22177, 20533, 19016, 17721, 16145, 14831, 13526, 12094, 10734, 9898, 8976, 8056, 7263, 6569, 6013, 5549, 5120, 4735, 4287, 3947, 3460, 3128, 2691, 2396, 2161, 2004, 1863, 1727, 1562, 1375, 1299, 1242, 1190, 1160, 1116, 1089, 1138, 1156, 1170, 1137, 1107, 1081, 1058, 1041, 1031, 1003, 1005, 959, 915, 838, 801, 723, 648, 647, 619, 599, 557, 531, 481, 395, 339, 295, 260, 208]
+}, 
+{
+        name: 'SEIR1月20号至1月26日预测结果',
+        type: 'line',
+        data: [207, 244, 315, 422, 560, 723, 903, 1088, 1267, 1435, 1590, 1729, 1853, 1965, 2063, 2150, 2226, 2292, 2349, 2398, 2439, 2473, 2501, 2523, 2539, 2550, 2557, 2560, 2558, 2554, 2546, 2536, 2523, 2507, 2490, 2470, 2449, 2427, 2403, 2378, 2351, 2324, 2297, 2268, 2239, 2209, 2179, 2149, 2118, 2087, 2056, 2025, 1994, 1963, 1932, 1901, 1871, 1840, 1810, 1780, 1750, 1720, 1690, 1661, 1632, 1604, 1576, 1548, 1520, 1493, 1467, 1440, 1414, 1388, 1363, 1338, 1314, 1289, 1266, 1242, 1219, 1196, 1174, 1152, 1131, 1109, 1089, 1068, 1048, 1028, 1009, 990, 971, 952, 934, 917, 899, 882, 865, 849, 832, 817, 801, 786, 771, 756, 741, 727, 713, 699, 686, 673, 660, 647, 635, 622, 610, 599, 587, 576, 565, 554, 543, 533, 522, 512, 502, 493, 483, 474, 464, 456, 447, 438, 430, 421, 413, 405, 397, 390, 382, 375, 367, 360, 353, 346, 340, 333, 327, 320, 314, 308, 302, 296, 290, 285, 279, 274, 269, 263, 258, 253, 248, 243, 239, 234, 230, 225, 221, 216, 212, 208, 204, 200, 196, 192, 189, 185, 181, 178, 174, 171, 168, 164, 161, 158, 155, 152, 149, 146, 143, 141, 138, 135, 133, 130, 127, 125, 123, 120, 118, 116, 113, 111, 109, 107, 105, 103, 101, 99, 97, 95, 93, 91, 89, 88, 86, 84, 83, 81, 79, 78, 76, 75, 73, 72, 71, 69, 68, 67, 65, 64, 63, 62, 60, 59, 58, 57, 56, 55, 54, 53, 52, 51, 50, 49, 48, 47, 46, 45, 44]
+//感染系数3.016838,潜伏者转换为感染者的比例0    .    0    1    9    5    6    7,感染者治愈率 0    .    0    7    4    0    1    7 ，初始S    0    =    1    6    3    4    2    0    5    .    6    7    ;    E    0    =    -    0    .    0    5    ;    I    0    =    -    0    .    0    7    
+}, 
+{
+        name: 'SEIR1月20号至2月10日预测结果',
+        type: 'line',
+        data: [6011, 7685, 9677, 11979, 14558, 17358, 20312, 23350, 26414, 29458, 32455, 35388, 38250, 41036, 43748, 46385, 48949, 51441, 53863, 56216, 58501, 60720, 62874, 64964, 66993, 68960, 70867, 72716, 74507, 76242, 77923, 79549, 81123, 82644, 84116, 85537, 86910, 88236, 89515, 90749, 91938, 93083, 94186, 95247, 96267, 97247, 98188, 99091, 99956, 100785, 101578, 102335, 103058, 103748, 104405, 105030, 105624, 106187, 106720, 107223, 107698, 108145, 108565, 108958, 109325, 109666, 109983, 110275, 110543, 110788, 111011, 111211, 111390, 111548, 111685, 111802, 111900, 111978, 112038, 112080, 112104, 112110, 112100, 112074, 112031, 111973, 111899, 111811, 111709, 111592, 111462, 111318, 111162, 110992, 110811, 110618, 110413, 110197, 109970, 109732, 109484, 109226, 108958, 108681, 108394, 108099, 107795, 107482, 107162, 106833, 106497, 106154, 105803, 105446, 105082, 104711, 104334, 103951, 103562, 103168, 102768, 102363, 101953, 101539, 101119, 100695, 100267, 99834, 99398, 98958, 98514, 98067, 97616, 97162, 96706, 96246, 95783, 95318, 94851, 94381, 93909, 93435, 92959, 92481, 92001, 91520, 91037, 90553, 90068, 89581, 89093, 88605, 88115, 87625, 87134, 86642, 86150, 85658, 85165, 84672, 84178, 83685, 83192, 82698, 82205, 81712, 81219, 80727, 80235, 79743, 79252, 78761, 78271, 77782, 77294, 76806, 76319, 75833, 75348, 74865, 74382, 73900, 73419, 72940, 72461, 71984, 71509, 71034, 70561, 70090, 69620, 69151, 68684, 68219, 67755, 67292, 66831, 66372, 65915, 65459, 65005, 64553, 64103, 63654, 63207, 62762, 62319, 61878, 61439, 61001, 60566, 60133, 59701, 59272, 58844, 58419, 57995, 57574, 57154, 56737, 56322, 55909, 55497, 55088, 54682, 54277, 53874, 53474, 53075, 52679, 52285, 51893, 51503]
+//感染系数1    0    .    9    3    3    5    4    6 ,潜伏者转换为感染者的比例0    .    0    1    6    2    0    4  ,感染者治愈率 0    .    0    0    9    2    9    7，初始 S    0    =    4    1    3    4    1    1    .    1    7    ;    E    0    =    5    9    .    8    2    ;    I    0    =    -    0    .    7    8    
+}, 
+
+    ]
+
+};;
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       
+</script>
+
+
+
+    <script language="javascript" type="text/javascript">
+
+        function write2() {
+
+            htmlobj = $.ajax({ url: "tail.html", async: false });
+            var tail = htmlobj.responseText;
+
+            document.write(tail);
+        }
+
+        write2();
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            var startDate = new Date('2020-01-23');
+            var endDate = new Date();
+            $('#date_start').datetimepicker({
+                format: 'yyyy-mm-dd',
+                weekStart: 1,
+                language: 'cn',
+                minView: 'month',
+                autoclose: true,
+                todayBtn: true,
+                startDate: startDate,
+                endDate: endDate,
+                language: "zh-CN",
+            }).on("changeDate", function (ev) {
+                if (ev.date) {
+                    $('#date_end').datetimepicker('setStartDate', new Date(ev.date.valueOf()))
+                } else {
+                    $('#date_end').datetimepicker('setStartDate');
+                }
+            });
+
+            $('#date_end').datetimepicker({
+                format: 'yyyy-mm-dd',
+                weekStart: 1,
+                language: 'cn',
+                minView: 'month',
+                autoclose: true,
+                startDate: startDate,
+                endDate: endDate,
+                language: "zh-CN",
+            }).on("changeDate", function (ev) {
+                if (ev.date) {
+                    $('#date_start').datetimepicker('setEndDate', new Date(ev.date.valueOf()))
+                } else {
+                    $('#date_start').datetimepicker('setEndDate', new Date());
+                }
+            });
+        });
+    </script>
+
+    <!--<script src="js/tail_2.js"></script>-->
+
+</body >
+
+</html >

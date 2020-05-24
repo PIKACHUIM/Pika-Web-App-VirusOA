@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>GO enrichment analysis</title>
+	
+    <meta name="keywords" content="LAUP,k-mer,bioinformatics">
+    <meta name="description" content="Web Server for Lineage-associated Underrepresented Permutations (LAUPs)">
+
+    <link rel="shortcut icon" href="favicon.ico"> <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+    <!--<style>
+	#gene_cpg{border:1px solid #000}
+	</style>-->
+</head>
+
+<body class="gray-bg">
+    <div class="row wrapper border-bottom white-bg page-heading">
+		<form method="get" class="form-horizontal" style="margin-left:20px">
+			<div style="float:left;">  
+                 <h3>Select annotation categories for GO enrichment analysis:</h3>
+            </div>
+            <div class="form-group col-sm-12" style="margin-top:25px;">
+            <div style="float:left;">  
+                 <label class=" control-label">Genome annotation version:</label>
+            </div>
+            <div class="col-sm-3">    
+                <select class="form-control m-b" name="account" id="version">
+                        <option value="go_results">GenCode v28 (GRCh38.p12)</option>
+                </select>
+            </div>
+<a href="#" data-toggle="tooltip" data-placement="right" title="Human genome annotations come from GENCODE, we will add more versions in the future."><i class="glyphicon glyphicon-question-sign" style = "font-size:15px;"></i></a>    
+            </div>
+		    <div id="category" style="margin-left:0px;margin-top:20px;">
+			<div id="category1">
+			<div style="margin-left:0px;margin-top:0px;"><label class="form-group col-sm-12">Category 1:</label></div>
+            <div class="form-group col-sm-3" style="margin-top:-15px;">
+                <label class="col-sm-3 control-label">CpG+/-:</label>
+
+                <div class="col-sm-6">
+                    <select class="form-control m-b" name="account" id="CpG">
+                        <option value="ALL">All</option>
+						<option value="CpG+">CpG+</option>					
+						<option value="CpG-">CpG-</option>
+                    </select>
+                </div>
+<a href="#" data-toggle="tooltip" data-placement="bottom" title="We annotate protein-coding genes regulated by CpG island as CpG+ genes (otherwise CpG-),see the homepage for detailed annotation method."><i class="glyphicon glyphicon-question-sign" style = "font-size:15px;"></i></a>
+            </div>
+			<div class="form-group col-sm-3" style="margin-top:-15px;">
+                <label class="col-sm-3 control-label">Density:</label>
+
+                <div class="col-sm-6">
+                    <select class="form-control m-b" name="account" id="Density">
+					</select>
+                </div>
+<a href="#" data-toggle="tooltip" data-placement="bottom" title="we annotate all human CpG island into three categories: HCGI(high-density CpG island) , ICGI(intermediate-density CpG island) and LCGI(low-density CpG island),see the homepage for detailed annotation method."><i class="glyphicon glyphicon-question-sign" style = "font-size:15px;"></i></a>
+            </div>
+			<div class="form-group col-sm-3" style="margin-top:-15px;">
+                <label class="col-sm-3 control-label">TATA+/-:</label>
+                <div class="col-sm-6">
+                    <select class="form-control m-b" name="account" id="TATA">
+                        <option value="ALL">All</option>
+						<option value="TATA+">TATA+</option>
+                        <option value="TATA-">TATA-</option>       
+                    </select>
+                </div>
+<a href="#" data-toggle="tooltip" data-placement="bottom" title="We annotate protein-coding genes regulated by TATA-box as TATA+ genes (otherwise TATA-),see the homepage for detailed annotation method."><i class="glyphicon glyphicon-question-sign" style = "font-size:15px;"></i></a>
+            </div>
+			<div class="form-group col-sm-3" style="margin-top:-15px;">
+                <label class="col-sm-4 control-label" style="margin-top:-8px">Expression breadth:</label>
+                <div class="col-sm-7">
+                    <select class="form-control m-b" name="account" id="breadth">
+                        <option value="ALL">All 1-18</option>
+						<option value="TS">TS (1-3)</option>
+                        <option value="HK">HK (16-18)</option>       
+                    </select>
+                </div>
+<a href="#" data-toggle="tooltip" data-placement="bottom" title="We select expression data of 18 representative tissues from GTEx and compute the expression breath,see the homepage for detailed method."><i class="glyphicon glyphicon-question-sign" style = "font-size:15px;"></i></a>
+            </div>
+			</div>
+			</div>
+			<div class="form-group col-sm-12" style="float:left;margin-top:0px;margin-left:0px;">
+				<button type="button" id="add_btn" class="btn btn-primary btn-outline" onclick="add_category()"><i class="glyphicon glyphicon-plus"></i></button>
+                <button type="button" id="del_btn" class="btn btn-primary btn-outline" onclick="del_category()" style="display:none"><i class="glyphicon glyphicon-minus"></i></button>
+				<a href="#" data-toggle="tooltip" data-placement="bottom" title="add a category for comparison" id = "add_btn_tip"><i class="glyphicon glyphicon-question-sign" style = "font-size:15px;"></i></a>
+            </div>
+            <div class="form-group col-sm-4" style="margin-top:0px;margin-left:0px;">
+				<button type="button" class="btn btn-primary" onclick="showreload()">Submit</button>
+            </div>
+							                             
+		</form>
+    </div>  
+	<div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-12">
+				<div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>GO enrichment results</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content" id="resultdiv1">
+						<h4 id="chart_title1">GO enrichment results of genes under category 1:</h4>
+                        <div class="go_echarts" id="go_chart_11" style="width:33%"></div>
+						<div class="go_echarts" id="go_chart_12" style="width:33%"></div>
+						<div class="go_echarts" id="go_chart_13" style="width:33%"></div>
+						<button type="button" id="resultdiv1_download" class="btn-white" onclick="downloadfile(1)" style="display:none">Download detailed GO enrichment analysis results</button>
+                    </div>
+					<div class="ibox-content" id="resultdiv2" style="display:none">
+						<h4 id="chart_title2">GO enrichment results of genes under category 2:</h4>
+                        <div class="go_echarts" id="go_chart_21" style="width:33%"></div>
+						<div class="go_echarts" id="go_chart_22" style="width:33%"></div>
+						<div class="go_echarts" id="go_chart_23" style="width:33%"></div>
+						<button type="button" class="btn-white" onclick="downloadfile(2)">Download detailed GO enrichment analysis results</button>
+                    </div>
+					<div class="ibox-content" id="resultdiv3" style="display:none">
+						<h4 id="chart_title3">GO enrichment results of genes under category 3:</h4>
+                        <div class="go_echarts" id="go_chart_31" style="width:33%"></div>
+						<div class="go_echarts" id="go_chart_32" style="width:33%"></div>
+						<div class="go_echarts" id="go_chart_33" style="width:33%"></div>
+						<button type="button" class="btn-white" onclick="">Download detailed GO enrichment analysis results</button>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>
+ <!-- 全局js -->
+    <script src="js/jquery.min.js?v=2.1.4"></script>
+    <script src="js/bootstrap.min.js?v=3.3.6"></script>
+
+    <!-- 自定义js -->
+    <script src="js/content.js?v=1.0.0"></script>
+
+    <!--<script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>-->
+    <!--统计代码，可删除-->
+	
+	<!--<script src="js/plugins/echarts/echarts-all.js"></script>-->
+	<script src="js/echarts.min.js"></script>
+	<script src="js/libs-655ac5be9c.min.js"></script>
+	<script src="js/LAUP.js"></script>
+	
+	<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+	<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+	<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+	<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+	<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+	<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+	<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+	
+	<script>
+		jQuery(document).ready(function() {
+		
+        $("#resultdiv1").append('<div class="nodata" style="text-align:center;top: 0;width: 100%;display: flex;justify-content: center;align-items: center;position: absolute;height: 100%;">No data</div>');		
+		
+		
+		});
+		$("#Density").click(function(){
+         if($("#Density").find("option").length==0)		 
+		 alert("Density can only be selected for CpG+，because the CpG- genes do not involve the regulation of CpG islands.");
+        });
+		$("#category").on("click","#Density2",function(){
+         if($("#Density2").find("option").length==0)	 
+		 alert("Density can only be selected for CpG+，Because the CpG- genes do not involve the regulation of CpG islands.");
+        });
+		$("#CpG").change(function(){
+			go_density();
+		});
+		$("#category").on("change","#CpG2",function(){
+			go_density2();
+		});
+		//showLoading(chart);
+        $(function () { $("[data-toggle='tooltip']").tooltip(); });
+		var data1;
+		var i=1;
+		function add_category(){
+		   
+			var category="";
+		    if(i<=1){
+			 i++;
+            category='<div id="category'+i+'">\
+			<div style="margin-left:0px;margin-top:0px;"><label class="form-group col-sm-12">Category for comparison:</label></div>';
+            category+='<div class="form-group col-sm-3" style="margin-top:-15px;">\
+                <label class="col-sm-3 control-label">CpG+/-:</label>\
+                <div class="col-sm-6">\
+                    <select class="form-control m-b" name="account" id="CpG'+i+'">\
+                        <option value="ALL">All</option> <option value="CpG+">CpG+</option> <option value="CpG-">CpG-</option>\
+                    </select></div></div>';
+			category+='<div class="form-group col-sm-3" style="margin-top:-15px;">\
+                <label class="col-sm-3 control-label">Density:</label>\
+                <div class="col-sm-6">\
+                    <select class="form-control m-b" name="account" id="Density'+i+'">\
+					</select></div></div>';            
+			category+='<div class="form-group col-sm-3" style="margin-top:-15px;">\
+                <label class="col-sm-3 control-label">TATA+/-:</label>\
+                <div class="col-sm-6">\
+                    <select class="form-control m-b" name="account" id="TATA'+i+'">\
+                        <option value="ALL">All</option> <option value="TATA+">TATA+</option><option value="TATA-">TATA-</option>\
+		            </select></div></div>';     
+			category+='<div class="form-group col-sm-3" style="margin-top:-15px;">\
+                <label class="col-sm-4 control-label" style="margin-top:-8px">Expression breadth:</label>\
+                <div class="col-sm-7">\
+                    <select class="form-control m-b" name="account" id="breadth'+i+'">\
+                        <option value="ALL">All 1-18</option> <option value="TS">TS (1-3)</option> <option value="HK">HK (16-18)</option>\
+						</select></div></div></div>';       
+            $("#category").append(category);
+			//alert(i);
+			$("#add_btn").hide();
+			$("#add_btn_tip").hide();
+            $("#del_btn").show();
+		    }
+			else 
+			alert("最多两个category");
+		
+		}
+		function del_category(){
+		    
+			//alert(i);
+			if(i==1){
+			 alert("只有一个category了")
+			}
+		    else if(i==2){
+			$("#category2").remove();
+			i--;
+	        $("#del_btn").hide();
+            $("#add_btn").show();
+			$("#add_btn_tip").show();
+			}
+		}
+		
+		var param = "";
+		function showreload(){
+
+			var Density = $("#Density").val();
+			if(Density == null)
+			{
+				Density = "ALL";
+			}
+			//xman:全部大写
+			param = ($("#CpG").val()+Density+$("#TATA").val()+$("#breadth").val()).toUpperCase();
+			if(param == "ALLALLALLALL")
+			{
+				alert("Please select first category!");
+				return;
+			}
+			
+			//xman:如果有多个
+			var category2 = document.getElementById("category2");
+			if(category2 != null)
+			{
+				var Density2 = $("#Density2").val();
+				if(Density2 == null)
+				{
+					Density2 = "ALL";
+				}
+				var thisparam = ($("#CpG2").val()+Density2+$("#TATA2").val()+$("#breadth2").val()).toUpperCase();
+				
+				if(thisparam.trim() == "ALLALLALLALL")
+				{
+					alert("Please select a category for comparison!");
+					return;
+				}
+				param += ";"+thisparam;
+			}
+			
+			getdata_CPG({
+					cpg_param: param,
+					cpg_path: $("#version").val(),
+					callback: function(data){
+					
+						data1=data.msg1;
+						data2=data.msg2;
+						data3=data.msg3;
+						
+						 
+						if(data1!=null)
+						{
+							changeDataToEchartdata(data1,1);
+						}
+						if(data2!=null)
+						{
+							changeDataToEchartdata(data2,2);
+						}
+						if(data3!=null)
+						{
+							changeDataToEchartdata(data3,3);
+						}
+					}
+				});
+
+			setTimeout(function (){
+						window.onresize = function () {
+							go_cpg.resize();
+						}
+					},200)
+
+				//options.update = true;
+		}
+		
+		function changeDataToEchartdata(data1,i)
+		{
+			 //xman:数据转换成echarts使用的格式
+			 var result_arr = data1.split(';');
+			 var len = result_arr.length;
+			 
+			 //xman:result_arr应该有三项
+			 var goarr1 = result_arr[0].split("&");
+			 var goarr2 = result_arr[1].split("&");
+			 var goarr3 = result_arr[2].split("&");
+			 
+			 var go_results1 = goarrToGoresource(goarr1);
+			 var go_results2 = goarrToGoresource(goarr2);
+			 var go_results3 = goarrToGoresource(goarr3);
+			 
+			 showGO(go_results1,go_results2,go_results3,i);
+		}
+		
+		function downloadfile(index)
+		{
+			var param_arr = param.split(";");
+			
+			var $eleForm = $("<form method='get'></form>");
+
+            $eleForm.attr("action","http://www.combio-lezhang.online/result/GOresult/"+param_arr[index-1]+".out");
+			
+            $(document.body).append($eleForm);
+
+            //提交表单，实现下载
+            $eleForm.submit();
+
+		}
+			
+		//xman:字符串转换成数组对象	
+		function goarrToGoresource(goarr){
+		
+			var go_results1 = [];
+			go_results1[0] = ['p-value', 'Gene number', 'GO term'];
+			for(var i=0; i<goarr.length-1; i++)
+			{
+				go_results1[i+1] = goarr[i].split("#");
+			}
+			
+			return go_results1;
+		}
+		
+		function findMaxY(go_results1,go_results2,go_results3)
+		{
+			var maxy1 = findOneMaxY(go_results1);
+			var maxy2 = findOneMaxY(go_results2);
+			var maxy3 = findOneMaxY(go_results3);
+			
+			var maxY = maxy1;
+			if(parseInt(maxY) < parseInt(maxy2))
+			{
+				maxY = maxy2;
+			}
+			if(parseInt(maxY) < parseInt(maxy3))
+			{
+				maxY = maxy3;
+			}
+			
+			return parseInt(maxY/10+1)*10;
+		}
+		
+		function findOneMaxY(go_results)
+		{
+			var maxY = 0;
+			for(var i=0; i<go_results.length; i++)
+			{
+				var y = go_results[i][1];
+				if(parseInt(maxY) < parseInt(y))
+				{
+					maxY = y;
+				}
+			}
+			
+			return maxY;
+		}
+		
+		function findOneMinP(go_results)
+		{
+			var MinP = 0;
+			for(var i=0; i<go_results.length; i++)
+			{
+				var p = go_results[i][0];
+				if(parseFloat(MinP) > parseFloat(p))
+				{
+					MinP = p;
+				}
+			}
+			
+			return parseInt(MinP-1);
+		}
+		
+		//xman:显示GO结果		
+		function showGO(go_results1,go_results2,go_results3,index){
+			
+			//XMAN:标题后加上分类名称
+			var categoryname = "";
+			var indexname = index.toString();
+			if(index == 1)
+			{
+				indexname = "";
+			}
+			var cpgname = $("#CpG"+indexname).val();
+			if(cpgname.toUpperCase()!= "ALL")
+			{
+				categoryname += cpgname;
+			}
+			var densityname = $("#Density"+indexname).val();
+			if(densityname != null && densityname.toUpperCase()!= "ALL")
+			{
+				categoryname += "/"+densityname;
+			}
+			var tataname = $("#TATA"+indexname).val();
+			if(tataname.toUpperCase() != "ALL")
+			{
+				categoryname += "/"+tataname;
+			}
+			var breadthname = $("#breadth"+indexname).val();
+			if(breadthname.toUpperCase() != "ALL")
+			{
+				categoryname += "/"+breadthname;
+			}
+			if(index == 1)
+			{
+				document.getElementById("chart_title"+index).innerHTML = "GO enrichment results of genes under category 1 ("+ categoryname +"):";
+			}
+			if(index == 2)
+			{
+				document.getElementById("chart_title"+index).innerHTML = "GO enrichment results of genes under compare category ("+ categoryname +"):";
+			}
+			
+			var resultdiv = document.getElementById("resultdiv"+index);
+			resultdiv.style.display="";
+            var resultdiv1_download = document.getElementById("resultdiv1_download");
+			resultdiv1_download.style.display="";
+            $(".nodata").remove(); 			
+		
+			var dom = document.getElementById("go_chart_"+index+"1");
+			var go_chart_1 = echarts.init(dom);
+			
+			//xman：为对比，三者统一Y轴
+			var maxY = findMaxY(go_results1,go_results2,go_results3);
+			var minP = findOneMinP(go_results1);
+				
+			option = null;
+			var option = {
+				title : {
+			            show:true,
+			            text: 'Molecular Function',
+						textStyle:{  
+							fontSize:16,
+							fontWeight:'bolder'
+							},
+						x:'10%',
+						y: '-5'
+				},
+				tooltip: {
+					trigger: 'axis',
+					position: [0,60]
+				},
+				dataset: {
+					source: go_results1
+				},
+				grid: {containLabel: true},
+				yAxis: {name: 'Gene number',
+						max:maxY,
+						nameTextStyle:{  
+							fontSize:12,
+							fontWeight:'bolder'
+							}
+						},
+				xAxis: {type: 'category',
+						axisLabel:{  
+							formatter:function(value)  
+								{  
+								   //最多2个单词组成的句子
+								   var valueArr = value.split(" ");
+								   var returnStr = valueArr.join(" ");
+								   if(valueArr.length > 2)
+								   {
+										returnStr = valueArr[0]+" "+valueArr[1]+"...";
+								   }
+								   
+									return returnStr; 
+								},
+							interval:0,  
+							rotate:20						
+							}
+						},
+				visualMap: {
+					orient: 'horizontal',
+					left: 'right',
+					top: '5%',
+					min: minP,
+					max: -1,
+					text: ['', 'P-value(Log10):'],
+					// Map the score column to color
+					dimension: 0,
+					inRange: {
+						color: ['#5978B3','#CFD8E9']
+					}
+				}, 
+				series: [
+					{
+						type: 'bar',
+						encode: {
+							// Map the "Gene number" column to Y axis.
+							y: 'Gene number',
+							// Map the "GO term" column to X axis
+							x: 'GO term'
+						}
+					}
+				]
+			};
+			// 为echarts对象加载数据 
+			go_chart_1.setOption(option);
+			//hideLoading(go_chart_1);
+		  
+			var option2 = option;
+			option2.title.text ="Cellular Component";
+			option2.dataset={
+					source: go_results2
+				};
+			option2.tooltip.position = null;	
+			option2.visualMap.inRange={
+						color: ['#FC500E','#FECEBC']
+					};
+			option2.visualMap.min=findOneMinP(go_results2);
+			var dom2 = document.getElementById("go_chart_"+index+"2");
+			var go_chart_2 = echarts.init(dom2);
+			// 为echarts对象加载数据 
+			go_chart_2.setOption(option2);
+			//hideLoading(go_chart_2);
+			
+			var option3 = option;
+			option3.title.text ="Biological Process";
+			option3.dataset={
+					source: go_results3
+				};
+			option2.tooltip.position = null;	
+			option3.visualMap.inRange={
+					color: ['#51BD9A','#CFEDE3']
+				};
+			option3.visualMap.min=findOneMinP(go_results3);
+			var dom3 = document.getElementById("go_chart_"+index+"3");
+			var go_chart_3 = echarts.init(dom3);
+			// 为echarts对象加载数据 
+			go_chart_3.setOption(option3);
+			//hideLoading(go_chart_3);
+		}		
+	</script>
+</body>
+
+</html>
+        								

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+
+    <title>2019nCoVAS</title>
+    <meta name="keywords" content="2019-NcoV,transmission,genome,psychological stress,LAUP,k-mer,bioinformatics">
+    <meta name="description"
+        content="Web service for 2019-NcoV transmission, genome, and psychological stress analysis">
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+
+    <link rel="shortcut icon" href="logo.png">
+    <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+    <script src="js/jquery.min.js"></script>
+
+
+    <script language="javascript" type="text/javascript">
+
+        function write1() {
+
+            htmlobj = $.ajax({ url: "head.html", async: false });
+            var head = htmlobj.responseText;
+            document.write(head);
+
+
+        }
+
+        write1();
+    </script>
+
+
+    <!---<script src="js/head_2.js"></script>-->
+
+
+    <style>
+        a.J_menuItem {
+            border-left: 2px solid rgba(34, 36, 38, .1);
+            /* border-right: 2px solid rgba(34,36,38,.1); */
+        }
+
+        a.dropdown-toggle {
+            border-left: 2px solid rgba(34, 36, 38, .1);
+            /* border-right: 2px solid rgba(34,36,38,.1); */
+        }
+
+        .navbar-header {
+            width: auto;
+        }
+
+        #page-wrapper .gray-bg {
+            margin-left: 10em;
+            margin-right: 10em;
+        }
+
+        #wrapper {
+            width: 100%;
+            overflow-x: hidden;
+            background-color: #ffffff;
+        }
+
+        #d {
+            width: 80%;
+            boder: 1px solid #000;
+            height: 800px;
+            margin: auto;
+            padding: 0px;
+        }
+
+        #d1 {
+            width: 80%;
+            height: 100px;
+            boder: 1px solid #000;
+            margin-top: 0;
+            margin-right: auto;
+            margin-bottom: 200;
+            margin-left: auto;
+            padding-bottom: 200px;
+        }
+
+        #d2 {
+            width: 30%;
+            height: 100px;
+            float: left;
+            boder: 1px solid #000;
+            margin-light: 10px;
+            margin-left: 10px
+        }
+
+        #d3 {
+            width: 30%;
+            height: 100px;
+            boder: 1px solid #000;
+            float: right;
+            margin-right: 10px;
+        }
+    </style>
+
+</head>
+
+
+
+<body class="gray-bg">
+
+    <script type="text/javascript">
+
+        function getTime() {
+
+            var dateObj = new Date();
+
+            var year = dateObj.getFullYear();
+
+            var month = dateObj.getMonth() + 1;
+
+            var date = dateObj.getDate();
+
+            if (month < 10) {
+                month = "0" + month;
+            }
+
+            if (date < 10) {
+                date = "0" + date;
+            }
+
+            var newDate = year + '-' + month + '-' + date;
+            return newDate;
+            document.getElementById("date1").innerHTML = newDate;//在div中写入时间
+        }
+
+    </script>
+
+    <div class="wrapper wrapper-content">
+        <div>
+            <ul class="breadcrumb" style="margin:5px 200px;font:bold 20px Georgia, serif">
+                <li><a href="home_1.html">首页</a></li>
+                <li class="active"><a href="genomic_variation.html">基因组序列分析</a></li>
+                <li class="active">基因组变异分析</a></li>
+            </ul>
+        </div>
+
+        <div style="border-style: solid;border-width:1px;margin: 5px 200px;padding:5px 15px;">
+
+            <div
+                style="border-style:dotted;border-radius:16px;border-width:1px;margin: 15px 10px;padding:25px;font-size:large">
+                <div style="margin: 10px 5px 15px">
+                    <form>
+                        <div class="row form-inline row">
+                            <div class='col-sm-6'>
+                                <div class="form-group">
+                                    <label for="formGroupInputLarge">选择开始日期：</label>
+                                    <!--指定 date标记-->
+                                    <div class='input-group date col-xs-6' id='date_start'>
+                                        <input type='text' class="form-control" readonly />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class='col-sm-6'>
+                                <div class="form-group">
+                                    <label>选择结束时间：</label>
+                                    <!--指定 date标记-->
+                                    <div class='input-group date col-xs-6' id='date_end'>
+                                        <input type='text' class="form-control" readonly />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-primary" onclick=""
+                                    style="float:bottom;margin:10px 20px">日期全选</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <button type="button" class="btn btn-primary" onclick=""
+                    style="float:bottom;margin:10px 20px">提交</button>
+                <button type="button" class="btn btn-primary" onclick=""
+                    style="float:bottom;margin:10px 20px">重置</button>
+                <i class="glyphicon glyphicon-question-sign" style="font-size:15px;float:bottom;margin:20px 20px">
+                    帮助</i>
+            </div>
+
+            <div id="container" style="height:300%;margin:0 auto;width:100%"></div>
+
+            <div style="margin:10px 30px">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <p>介绍数据来源和统计办法,并且连接到国家生物信息中心的网站</p>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
+
+
+    <script type="text/javascript" src="js/jquery-1.8.3.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="js/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+
+    <script type="text/javascript">
+
+        var dom = document.getElementById("container");
+        var myChart = echarts.init(dom);
+        var app = {};
+        option = null;
+        option = {
+            title: {
+                text: '2019-nCOV 确诊人数，变异率与应急心态',
+                top: 10,
+                left: 10
+            },
+            toolbox: {
+                show: true,
+                top: 10,
+                right: 10,
+                feature: {
+                    mark: { show: true },
+                    magicType: { show: true, type: ['line', 'bar'] },
+                    restore: { show: true },
+                    saveAsImage: { show: true }
+                }
+            },
+            grid: {
+                top: 60,
+                right: 70,
+                bottom: 80,
+                left: 60
+            },
+            legend: {
+                top: 32,
+                left: 'center',
+                data: ['新增确诊人数', '变异率中位数', '变异率平均数', '应急心态']
+            },
+            calculable: true,
+            xAxis: [
+                {
+                    type: 'category',
+                    data: ["2020-01-23", "2020-01-24", "2020-01-25", "2020-01-26", "2020-01-27", "2020-01-28", "2020-01-29", "2020-01-30", "2020-01-31", "2020-02-01", "2020-02-02", "2020-02-03", "2020-02-04", "2020-02-05", "2020-02-06", "2020-02-07", "2020-02-08", "2020-02-09", "2020-02-10", "2020-02-11", "2020-02-12", "2020-02-13", "2020-02-14", "2020-02-15", "2020-02-16", "2020-02-17", "2020-02-18", "2020-02-19", "2020-02-20", "2020-02-21", "2020-02-22", "2020-02-23", "2020-02-24", "2020-02-25", "2020-02-26", "2020-02-27", "2020-02-28", "2020-02-29", "2020-03-01", "2020-03-02", "2020-03-03", "2020-03-04", "2020-03-05", "2020-03-06", "2020-03-07", "2020-03-08", "2020-03-09", "2020-03-10", "2020-03-11", "2020-03-12", "2020-03-13", "2020-03-14", "2020-03-15", "2020-03-16", "2020-03-17", "2020-03-18", "2020-03-19", "2020-03-20", "2020-03-21", "2020-03-22", "2020-03-23"],
+                    axisLabel: {
+                        interval: 1, //坐标刻度之间的显示间隔，默认就可以了（默认是不重叠）
+                        rotate: 38   //调整数值改变倾斜的幅度（范围-90到90）
+                    }
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    name: "新\n增\n确\n诊\n人\n数\n",
+                    nameLocation: "center",
+                    nameGap: 44,
+                    nameRotate: 0,
+                    nameTextStyle: {
+                        fontSize: 16,
+                    }
+                },
+                {
+                    type: 'value',
+                    name: "应\n急\n心\n态\n/\n变\n异\n率\n",
+                    nameLocation: "center",
+                    nameGap: 35,
+                    nameRotate: 0,
+                    nameTextStyle: {
+                        fontSize: 16,
+                    },
+                    axisLabel: {
+                        show: true,
+                        interval: 'auto',
+                        formatter: '{value}'
+                    }
+                }
+            ],
+            series: [
+                {
+                    name: '新增确诊人数',
+                    type: 'line',
+                    smooth: true,
+                    yAxisIndex: 0,
+                    data: [95, 279, 486, 670, 803, 2635, 578, 2055, 1662, 2089, 4739, 3086, 3992, 3733, 3152, 3523, 2705, 3016, 2525, 2032, 373, 15136, 6463, 2055, 2102, 1923, 1777, 409, 459, 475, 1451, 23, 221, 514, 413, 434, 330, 433, 577, 205, 126, 125, 153, 154, 80, 53, 37, 29, 35, 12, 14, 35, 32, 38, 35, 67, 62, 121, 73, 108, 42]
+                },
+                {
+                    name: '变异率中位数',
+                    type: 'line',
+                    smooth: true,
+                    yAxisIndex: 1,
+                    data: [6.688292E-5, 1.0032438E-4, 6.688292E-5, 1.672073E-4, 1.672073E-4, 1.3376585E-4, 1.0032438E-4, 1.0032438E-4, 1.672073E-4, 1.0032438E-4, 1.0032438E-4, 1.0032438E-4, 6.688292E-5, 1.3376585E-4, 1.672073E-4, 1.672073E-4, 1.672073E-4, 6.688292E-5, 5.6850485E-4, 2.3409023E-4, 1.0032438E-4, 1.0032438E-4, 3.344146E-5, 6.688292E-5, 6.688292E-5, 6.688292E-5, 1.0032438E-4, 3.344146E-5, 1.672073E-4, 1.672073E-4, 1.672073E-4, 3.344146E-5, 2.3409023E-4, 1.672073E-4, 2.3409023E-4, 1.672073E-4, 1.672073E-4, 2.0064876E-4, 2.0064876E-4, 2.3409023E-4, 2.0064876E-4, 2.0064876E-4, 2.0064876E-4, 2.0064876E-4, 2.3409023E-4, 2.3409023E-4, 2.675317E-4, 2.3409023E-4, 2.0064876E-4, 2.3409023E-4, 2.0064876E-4]
+                },
+                {
+                    name: '变异率平均数',
+                    type: 'line',
+                    smooth: true,
+                    yAxisIndex: 1,
+                    data: [6.173808E-5, 1.18565185E-4, 9.076968E-5, 1.9507519E-4, 2.173695E-4, 1.28621E-4, 1.791507E-4, 1.2447656E-4, 1.5383071E-4, 9.4054114E-5, 1.226187E-4, 1.4045414E-4, 9.554704E-5, 1.2038926E-4, 1.60519E-4, 1.4714242E-4, 1.44913E-4, 8.3603656E-5, 4.0129756E-4, 1.672073E-4, 1.0032438E-4, 1.0032438E-4, 3.344146E-5, 9.076969E-5, 7.006783E-5, 7.7172605E-5, 1.11471534E-4, 3.344146E-5, 1.2819226E-4, 1.3376583E-4, 1.17045114E-4, 1.672073E-5, 2.9539957E-4, 2.0064878E-4, 2.2517252E-4, 1.73179E-4, 1.8727219E-4, 2.126534E-4, 2.0993808E-4, 2.2480085E-4, 2.1668228E-4, 2.1359378E-4, 2.1736945E-4, 2.1597605E-4, 2.1486136E-4, 2.2294297E-4, 2.4294229E-4, 2.31164E-4, 2.2129159E-4, 2.3669592E-4, 2.121904E-4]
+                },
+                {
+                    name: '应急心态',
+                    type: 'line',
+                    smooth: true,
+                    yAxisIndex: 1,
+                    data: [16, 30, 60, 51, 43, 41, 36, 20, 12, 16, 20, 10]
+                },
+
+            ]
+        };
+
+        if (option && typeof option === "object") {
+            myChart.setOption(option, true);
+        }
+    </script>
+
+
+
+    <script language="javascript" type="text/javascript">
+
+        function write2() {
+
+            htmlobj = $.ajax({ url: "tail.html", async: false });
+            var tail = htmlobj.responseText;
+
+            document.write(tail);
+        }
+
+        write2();
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            var startDate = new Date('2020-01-23');
+            var endDate = new Date();
+            $('#date_start').datetimepicker({
+                format: 'yyyy-mm-dd',
+                weekStart: 1,
+                language: 'cn',
+                minView: 'month',
+                autoclose: true,
+                todayBtn: true,
+                startDate: startDate,
+                endDate: endDate,
+                language: "zh-CN",
+            }).on("changeDate", function (ev) {
+                if (ev.date) {
+                    $('#date_end').datetimepicker('setStartDate', new Date(ev.date.valueOf()))
+                } else {
+                    $('#date_end').datetimepicker('setStartDate');
+                }
+            });
+
+            $('#date_end').datetimepicker({
+                format: 'yyyy-mm-dd',
+                weekStart: 1,
+                language: 'cn',
+                minView: 'month',
+                autoclose: true,
+                startDate: startDate,
+                endDate: endDate,
+                language: "zh-CN",
+            }).on("changeDate", function (ev) {
+                if (ev.date) {
+                    $('#date_start').datetimepicker('setEndDate', new Date(ev.date.valueOf()))
+                } else {
+                    $('#date_start').datetimepicker('setEndDate', new Date());
+                }
+            });
+        });
+    </script>
+
+    <!--<script src="js/tail_2.js"></script>-->
+
+</body >
+
+</html >

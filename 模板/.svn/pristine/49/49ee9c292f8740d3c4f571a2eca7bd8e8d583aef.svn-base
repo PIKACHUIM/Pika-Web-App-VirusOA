@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>Proportion analysis of CpG island density</title>
+	
+    <meta name="keywords" content="LAUP,k-mer,bioinformatics">
+    <meta name="description" content="Web Server for Lineage-associated Underrepresented Permutations (LAUPs)">
+
+    <link rel="shortcut icon" href="favicon.ico"> <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+    <!--<style>
+	#gene_cpg{border:1px solid #000}
+	</style>-->
+</head>
+
+<body class="gray-bg">
+    <div class="row wrapper border-bottom white-bg page-heading">
+		<form method="get" class="form-horizontal" >
+			<div style="float:left;">  
+                 <h3>Select annotation categories for proportion analysis of CpG island density:</h3>
+            </div>
+		    <div class="form-group col-sm-12" style="margin-top:25px;">
+            <div style="float:left;">  
+                 <label class=" control-label">Genome annotation version:</label>
+            </div>
+            <div class="col-sm-3">    
+                <select class="form-control m-b" name="account" id="version">
+                        <option value="">GenCode v28 (GRCh38.p12)</option>
+                </select>
+            </div> 
+            <a href="#" data-toggle="tooltip" data-placement="right" title="Human genome annotations come from GENCODE, we will add more versions in the future."><i class="glyphicon glyphicon-question-sign" style = "font-size:15px;"></i></a>   
+            </div>
+		    <div id="category" style="margin-left:0px;margin-top:20px;">
+			<div id="category1">
+			<div style="margin-left:0px;"><label class="form-group col-sm-12">Category 1:</label></div>
+            <div class="form-group col-sm-3" style="margin-top:-15px;">
+                <label class="col-sm-3 control-label">CpG+/-:</label>
+
+                <div class="col-sm-6">
+                    <select class="form-control m-b" name="account" id="CpG">
+                        <option value="All">All</option>
+						<option value="CpG+">CpG+</option>					
+						<option value="CpG-">CpG-</option>
+                    </select>
+                </div>
+<a href="#" data-toggle="tooltip" data-placement="bottom" title="We annotate protein-coding genes regulated by CpG island as CpG+ genes (otherwise CpG-),see the homepage for detailed annotation method."><i class="glyphicon glyphicon-question-sign" style = "font-size:15px;"></i></a>
+            </div>
+			<div class="form-group col-sm-3" style="margin-top:-15px;">
+                <label class="col-sm-3 control-label">TATA+/-:</label>
+                <div class="col-sm-6">
+                    <select class="form-control m-b" name="account" id="TATA">
+                        <option value="All">All</option>
+						<option value="TATA+">TATA+</option>
+                        <option value="TATA-">TATA-</option>       
+                    </select>
+                </div>
+<a href="#" data-toggle="tooltip" data-placement="bottom" title="We annotate protein-coding genes regulated by TATA-box as TATA+ genes (otherwise TATA-),see the homepage for detailed annotation method."><i class="glyphicon glyphicon-question-sign" style = "font-size:15px;"></i></a>
+            </div>
+			<div class="form-group col-sm-3" style="margin-top:-15px;">
+                <label class="col-sm-4 control-label" style="margin-top:-8px;">Expression breadth:</label>
+                <div class="col-sm-7">
+                    <select class="form-control m-b" name="account" id="breadth">
+                        <option value="All">All 1-18</option>
+						<option value="TS">TS (1-3)</option>
+                        <option value="HK">HK (16-18)</option>       
+                    </select>
+                </div>
+<a href="#" data-toggle="tooltip" data-placement="bottom" title="We select expression data of 18 representative tissues from GTEx and compute the expression breath,see the homepage for detailed method."><i class="glyphicon glyphicon-question-sign" style = "font-size:15px;"></i></a>
+            </div>
+			</div>
+            </div>
+            <div class="form-group col-sm-12" style="float:left;margin-top:0px;margin-left:0px;">
+				<button id="add_btn" type="button" class="btn btn-primary btn-outline" onclick="add_category()"><i class="glyphicon glyphicon-plus"></i></button>
+                <button type="button" style="display:none" id="del_btn" class="btn btn-primary btn-outline" onclick="del_category()"><i class="glyphicon glyphicon-minus"></i></button>
+            <a href="#" data-toggle="tooltip" data-placement="bottom" title="add a category for comparison" id = "add_btn_tip"><i class="glyphicon glyphicon-question-sign" style = "font-size:15px;"></i></a>
+            </div>
+            <div class="form-group col-sm-4" style="margin-top:0px;margin-left:0px;">
+				<button type="button" class="btn btn-primary" onclick="showreload()">Submit</button>
+            </div>
+							                             
+		</form>
+    </div>  
+	<div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-12">
+				<div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Proportion of CpG+/- TATA+/- genes in different expression breadth:</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                <div class="col-sm-6">
+				<div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Proportion distribution of genes under category 1</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="echarts" id="gene_cpg"></div>
+                    </div>
+                </div>
+                </div>
+                <div class="col-sm-6">
+				<div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Proportion distribution of genes under compare category</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="echarts" id="gene_cpg_compare"></div>
+                    </div>
+                </div>
+                </div>
+                </div>
+            </div>
+		</div>
+	</div>
+	
+	<div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-4">
+				<div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Density proportion of all human CpG island:</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="echarts" id="distribution_cpg1" style="height: 200%"></div>
+                    </div>
+                </div>
+            </div>
+			<div class="col-sm-4">
+				<div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Density proportion of CpG+ island:</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="echarts" id="distribution_cpg2" style="height: 200%"></div>
+                    </div>
+                </div>
+            </div>
+			<div class="col-sm-4">
+				<div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Number distribution of CpG+/- islands on different densities:</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="echarts" id="distribution_cpg3" style="height: 200%"></div>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>
+    <!-- 全局js -->
+    <script src="js/jquery.min.js?v=2.1.4"></script>
+    <script src="js/bootstrap.min.js?v=3.3.6"></script>
+
+    <!-- 自定义js -->
+    <script src="js/content.js?v=1.0.0"></script>
+
+    <!--<script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>-->
+    <!--统计代码，可删除-->
+	
+	<!--<script src="js/plugins/echarts/echarts-all.js"></script>-->
+	<script src="js/echarts.min.js"></script>
+	<script src="js/libs-655ac5be9c.min.js"></script>
+	<script src="js/LAUP.js"></script>
+	<script>
+		jQuery(document).ready(function() {
+		gene_cpg = echarts.init(document.getElementById('gene_cpg'));
+		gene_cpg_compare = echarts.init(document.getElementById('gene_cpg_compare'));
+		distribution_cpg1 = echarts.init(document.getElementById('distribution_cpg1'));
+		distribution_cpg2 = echarts.init(document.getElementById('distribution_cpg2'));
+		distribution_cpg3 = echarts.init(document.getElementById('distribution_cpg3'));
+		drawchart1(gene_cpg,null);
+        drawchart1(gene_cpg_compare,null);
+		drawchart_distr1(distribution_cpg1,true);
+		drawchart_distr2(distribution_cpg2,true);
+		drawchart_distr3(distribution_cpg3,true);
+		});
+		//showLoading(chart);
+        $(function () { $("[data-toggle='tooltip']").tooltip(); });
+		var data1,data2;
+		var i=1;
+		function add_category(){
+		   
+			var category="";
+		    if(i<=1){
+			 i++;
+            category='<div id="category'+i+'" style="margin-top:0px;">\
+			<div style="margin-left:0px;"><label class="form-group col-sm-12" style="margin-top:0px;">Category for comparison:</label></div>';
+            category+='<div class="form-group col-sm-3" style="margin-top:-15px;">\
+                <label class="col-sm-3 control-label">CpG+/-:</label>\
+                <div class="col-sm-6">\
+                    <select class="form-control m-b" name="account" id="CpG'+i+'">\
+                        <option value="All">All</option> <option value="CpG+">CpG+</option> <option value="CpG-">CpG-</option>\
+                    </select></div></div>';       
+			category+='<div class="form-group col-sm-3" style="margin-top:-15px;">\
+                <label class="col-sm-3 control-label">TATA+/-:</label>\
+                <div class="col-sm-6">\
+                    <select class="form-control m-b" name="account" id="TATA'+i+'">\
+                        <option value="All">All</option> <option value="TATA+">TATA+</option><option value="TATA-">TATA-</option>\
+		            </select></div></div>';     
+			category+='<div class="form-group col-sm-3" style="margin-top:-15px;">\
+                <label class="col-sm-4 control-label" style="margin-top:-8px">Expression breadth:</label>\
+                <div class="col-sm-7">\
+                    <select class="form-control m-b" name="account" id="breadth'+i+'">\
+                        <option value="All">All 1-18</option> <option value="TS">TS (1-3)</option> <option value="HK">HK (16-18)</option>\
+						</select></div></div></div>';       
+            $("#category").append(category);
+			//alert(i);
+            $("#add_btn").hide();
+			$("#add_btn_tip").hide();
+			
+            $("#del_btn").show();
+		    }
+			else 
+			alert("最多2个category");
+		
+		}
+		function del_category(){
+		    
+			//alert(i);
+			if(i==1){
+				alert("只有一个category了")
+			}
+		    else if(i==2){
+				$("#category2").remove();
+				i--;
+                $("#del_btn").hide();
+                $("#add_btn").show();
+				$("#add_btn_tip").show();
+			}
+		}
+		//
+		//alert(genetype);
+		function drawchart1(chart,data){
+			chart.clear();
+
+			if(data==""||data==undefined){
+				$("#gene_cpg .nodata").remove();
+				option={};
+				$("#gene_cpg").append('<div class="nodata" style="text-align:center;top: 0;width: 100%;display: flex;justify-content: center;align-items: center;position: absolute;height: 100%;">No data</div>');
+				//console.log(data1);
+                $("#gene_cpg_compare .nodata").remove();
+                $("#gene_cpg_compare").append('<div class="nodata" style="text-align:center;top: 0;width: 100%;display: flex;justify-content: center;align-items: center;position: absolute;height: 100%;">No data</div>');
+			}
+			else
+			{
+				//xman:对返回数据进行处理
+				var dataArr = data.msg.split(";");
+				var ts = data.TS;
+				
+				var len = dataArr.length;
+				
+				var name_arr=["LCGI","ICGI","HCGI"];
+				var name_arr_long=["LCGI","ICGI","HCGI","CpG-"];
+				var yAxis_name = "Percentage of genes";
+				
+				var xAxis_arr = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18'];
+				
+				//xman:如果是多项，显示比例,而不是数量,那么先统计每一列的和
+				var line_sum_arr = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+				
+				if(len>1)
+				{
+					for(var j=0; j<len; j++)
+					{
+						var aitem_arr = dataArr[j].split(",");
+						
+						for(var k=0; k<aitem_arr.length; k++)
+						{
+							line_sum_arr[k] += parseInt(aitem_arr[k]);
+						}
+					}
+				}
+			
+				var series_data = [];
+				for(var i=0; i<len; i++)
+				{
+					var item_arr = dataArr[i].split(",");
+					
+					var itemname = "protein-coding genes";
+					if(len>1)
+					{
+						
+						if(len == 4)
+						{
+							name_arr = name_arr_long;
+						}
+
+						itemname = name_arr[i];
+
+						//xman:如果是多项，显示比例,而不是数量
+						for(var m=0; m<item_arr.length; m++)
+						{
+							item_arr[m] = parseInt(item_arr[m])/parseInt(line_sum_arr[m]);
+						}
+					}
+					else
+					{
+						name_arr = ["protein-coding genes"];
+						yAxis_name = "Number of genes"
+					}
+					
+					//xman:如果只选择了TS或HK，截取部分
+					var temp_arr = [];
+					if(ts == "TS")
+					{
+						temp_arr.push(item_arr[0]);
+						temp_arr.push(item_arr[1]);
+						temp_arr.push(item_arr[2]);
+						
+						item_arr = temp_arr;
+						
+						xAxis_arr = ['1','2','3'];
+					}
+					else if(ts == "HK")
+					{
+						temp_arr.push(item_arr[item_arr.length-3]);
+						temp_arr.push(item_arr[item_arr.length-2]);
+						temp_arr.push(item_arr[item_arr.length-1]);
+						
+						item_arr = temp_arr;
+						
+						xAxis_arr = ['16','17','18'];
+					}
+
+					//alert(item_arr);
+					
+					var obj = {name:itemname,type:'bar',data:item_arr,stack:'genetype'};
+
+					series_data.push(obj);
+				}
+				$(".nodata").remove();
+
+				//var genetype0=$("#showtype").val();
+				//var genetype=genetype0.split(',');
+				//console.log(genetype);
+				option = {
+					title : {
+						text: '',
+						x: '15'
+					},
+					tooltip : {
+						trigger: 'axis'
+						
+					},
+					legend: {
+						data:name_arr,
+						itemWidth: 10,             // 图例图形宽度
+						itemHeight: 14,
+						y: '20'
+					},
+					toolbox: {
+						show : true,
+						feature : {
+							mark : {show: true},
+							dataView : {show: true, readOnly: false,title:"Data view",lang:["Data view","Close","Refresh"]},
+							magicType : {show: true, type: ['line', 'bar'],title:{line:"Switch to line chart",bar:"Switch to bar chart"}},
+							restore : {show: true,title:"Restore"},
+							saveAsImage : {show: true,title:"Save as image"}
+						}
+					},
+					calculable : true,
+					xAxis : [
+						{
+							type : 'category',
+							nameLocation : 'middle',
+							nameGap:25,
+							name : 'Expression breadth',
+							data : xAxis_arr
+						}
+					],
+					yAxis : [
+						{
+							type : 'value',
+							name:yAxis_name,
+							axisLabel: {
+								show: true,
+								interval: 'auto',
+								formatter:function(value)  
+								{  
+									if(len>1)
+									{
+										//xman:y轴转换成百分比
+										return (value*100)+"%";
+									}
+									else
+									{
+										return value; 
+									}
+								}
+						 },
+
+						}
+					],
+					series : series_data
+				};     //option结束
+				
+			}  //第一个else结束
+	
+			// 为echarts对象加载数据 
+			chart.setOption(option);
+			hideLoading(chart);
+			//alert(data1.errtext);
+					
+		}
+		
+		function drawchart_distr1(chart,init){
+			var draw1=function(){
+					if(init){
+						chart.clear();
+						$("#distribution_cpg1 .nodata").remove();
+						option={};
+						$("#distribution_cpg1").append('<div class="nodata" style="text-align:center;top: 0;width: 100%;display: flex;justify-content: center;align-items: center;position: absolute;height: 100%;">No data</div>');
+						//console.log(data1);
+					}else{
+						$(".nodata").remove();
+						//var a=data2.split(';');
+						//var b=a[0].split(',');
+						option = {
+                              tooltip : {
+                              trigger: 'item',
+                              formatter: "{a} <br/>{b} : {c} ({d}%)"
+                              },
+                              legend: {
+                              orient: 'vertical',
+                              left: 'left',
+                              data: ['LCGI','ICGI','HCGI']
+                              },
+							  toolbox: {
+								show : true,
+								feature : {
+									mark : {show: true},
+									dataView : {show: true, readOnly: false,title:"Data view",lang:["Data view","Close","Refresh"]},
+									restore : {show: true,title:"Restore"},
+									saveAsImage : {show: true,title:"Save as image"}
+								}
+							  },
+                              series : [
+                              {
+                              name: 'all_island',
+                              type: 'pie',
+                              radius : '70%',
+                              center: ['50%', '40%'],
+                              data:[
+                              {value:13404, name:'LCGI'},
+                              {value:2707, name:'ICGI'},
+                              {value:14362, name:'HCGI'},
+                               ],
+           
+                              }
+                               ]
+                            };
+						}
+                    chart.setOption(option);
+					hideLoading(chart);
+				}(); 
+        }				
+		
+		function drawchart_distr2(chart,init){
+			var draw2=function(){
+					if(init){
+						chart.clear();
+						$("#distribution_cpg2 .nodata").remove();
+						option={};
+						$("#distribution_cpg2").append('<div class="nodata" style="text-align:center;top: 0;width: 100%;display: flex;justify-content: center;align-items: center;position: absolute;height: 100%;">No data</div>');
+						//console.log(data1);
+					}else{
+						$(".nodata").remove();
+						//var a=data2.split(';');
+						//var b=a[1].split(',');
+						option = {
+                              tooltip : {
+                              trigger: 'item',
+                              formatter: "{a} <br/>{b} : {c} ({d}%)"
+                              },
+                              legend: {
+                              orient: 'vertical',
+                              //bottom: 0,
+                              left: 'left',
+                              data: ['LCGI','ICGI','HCGI']
+                              },
+							  toolbox: {
+								show : true,
+								feature : {
+									mark : {show: true},
+									dataView : {show: true, readOnly: false,title:"Data view",lang:["Data view","Close","Refresh"]},
+									restore : {show: true,title:"Restore"},
+									saveAsImage : {show: true,title:"Save as image"}
+								}
+							  },
+                              series : [
+                              {
+                              name: 'code_gene_CGI',
+                              type: 'pie',
+                              radius : '70%',
+                              center: ['50%', '60%'],
+                              data:[
+                              {value:2808, name:'LCGI'},
+                              {value:805, name:'ICGI'},
+                              {value:9820, name:'HCGI'},
+                               ],
+           
+                              }
+                               ]
+                            };
+						}
+                    chart.setOption(option);
+					hideLoading(chart);
+				}(); 
+        }				
+		
+	    function drawchart_distr3(chart,init){
+			var draw3=function(){
+					if(init){
+						chart.clear();
+						$("#distribution_cpg3 .nodata").remove();
+						option={};
+						$("#distribution_cpg3").append('<div class="nodata" style="text-align:center;top: 0;width: 100%;display: flex;justify-content: center;align-items: center;position: absolute;height: 100%;">No data</div>');
+						//console.log(data1);
+					}else{
+						$(".nodata").remove();
+						//var a=data2.split(';');
+						//var b1=a[2].split(',');
+						//var b2=a[3].split(',');
+						option = {
+							tooltip : {
+								trigger: 'axis',	
+							},
+							grid: {
+        left: '20%',   //距离左边的距离
+        right: '25%', //距离右边的距离
+        bottom: '20',//距离下边的距离
+        top: '50',//距离上边的距离
+        },
+							legend: {
+								data:['CpG+ island','CpG- island'],
+								itemWidth: 10,             // 图例图形宽度
+								itemHeight: 14
+							},
+							toolbox: {
+								show : true,
+								feature : {
+									mark : {show: true},
+									dataView : {show: true, readOnly: false,title:"Data view",lang:["Data view","Close","Refresh"]},
+									magicType : {show: true, type: ['line'],title:{line:"Switch to line chart"}},
+									restore : {show: true,title:"Restore"},
+									saveAsImage : {show: true,title:"Save as image"}
+								}
+							},
+							calculable : true,
+							xAxis : [
+								{
+									type : 'category',
+									name : 'CpG density',
+									//nameLocation:'middle',
+									data : ['LCGI','ICGI','HCGI']
+								}
+							],
+							yAxis : [
+								{
+									type : 'value',
+									name:'number of CpG-island',
+									axisLabel: {
+                                    show: true,
+                                    interval: 'auto',
+                                 },
+
+								}
+							],
+							series : [
+								{
+								name:'CpG+ island',
+								type:'bar',
+								data:[2808,805,9820],
+								stack:'cpg_density',
+								label: {
+									normal: {
+										show: true
+										}
+									}
+								},
+								{
+								name:'CpG- island',
+								type:'bar',
+								data:[10596,1902,4542],
+								stack:'cpg_density',
+								barWidth : 30,
+								}
+							]
+						};     //option结束
+					}  //第一个else结束
+					// 为echarts对象加载数据 
+					chart.setOption(option);
+					hideLoading(chart);
+					//alert(data1.errtext);
+				}();         //fuction结束
+		}	
+		
+		function showreload(){
+		
+		var param = ($("#CpG").val()+';'+$("#TATA").val()+';'+$("#breadth").val()).toUpperCase();
+		
+		getdata_CPG({
+				cpg_param: param,
+				cpg_path: $("#version").val(),
+				callback: function(data){
+					 data1=data;
+				}
+			});
+
+        if(i==1){
+	           gene_cpg_compare.clear();
+               drawchart1(gene_cpg,data1);
+            }  
+       else if(i==2){
+		getdata_CPG({
+				cpg_param: ($("#CpG2").val()+';'+$("#TATA2").val()+';'+$("#breadth2").val()).toUpperCase(),
+				cpg_path: $("#version").val(),
+				callback: function(data){
+					 data2=data;
+				}
+			});        
+        drawchart1(gene_cpg,data1); 
+        drawchart1(gene_cpg_compare,data2);
+        
+         }
+		drawchart_distr1(distribution_cpg1,false);
+		drawchart_distr2(distribution_cpg2,false);
+		drawchart_distr3(distribution_cpg3,false);
+		setTimeout(function (){
+	        	    window.onresize = function () {
+	        	    	gene_cpg.resize();
+						gene_cpg_compare.resize();
+	        	    	distribution_cpg1.resize();
+						distribution_cpg2.resize();
+						distribution_cpg3.resize();
+	        	    }
+	        	},200)
+
+			//options.update = true;
+			}
+	</script>
+</body>
+
+</html>
+        

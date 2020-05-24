@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>WSLAUP</title>
+<meta name="keywords" content="LAUP,k-mer,bioinformatics">
+<meta name="description" content="Web Server for Lineage-associated Underrepresented Permutations (LAUPs)">
+<link rel="shortcut icon" href="favicon.ico"> <link href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=4.1.0" rel="stylesheet">
+</head>
+
+<body class="gray-bg" style="font-size: 18px; color: #000;">
+<p style="margin-left:45px; margin-top:25px;">JBLA (Jellyfish based LAUPs analysis application) [1] is an algorithm we used to calculate and analyze LAUPs based on the improved Jellyfish 2.2.6 version.<br>
+ The flow chart of JBLA is as follows:</p>
+<p style="margin-left:45px; margin-top:25px;"><img border="0" width="497" height="658" src="img/LAUP_count.png"></p>
+
+<p style="margin-left:45px; margin-top:25px;">For JBLA source code, please click  <a href="JBLA_code.zip" download="JBLA_code.zip">JBLA_code.zip</a> for download.</p>
+
+<p style="margin-left:45px; margin-top:50px;">The configuration requirements and installation methods of JBLA are consistent with that of Jellyfish.<br>
+Please see the <a href="http://www.genome.umd.edu/jellyfish.html" style="font-size: 20px">Homepage of Jellyfish 2</a> for detailed description.</p>
+
+<p style="margin-left:45px; margin-top:50px;" >After the JBLA is installed, the LAUPS_count_states method can be used to calculate and analyze the LAUPs of a genome file.<br>
+The parameters of LAUPS_count_states are:<br><br>
+1.the PATH of the file<br> 
+2.start K<br>
+3.end K <br>
+4. the result file number index<br><br><br>
+For example, the following command (under the LAUPS_count_states directory) :<br>
+./LAUPS_count_states  test.fasta  9  14  1.<br>
+will calculate and analyze LAUPs of test. Fasta with K from 9 to 14.<br><br><br>
+
+Note that the current output directory is hard-coded，see:<br><br>
+
+<img border="0"  src="img/code1.png"><br><br>
+<img border="0"  src="img/code2.png"><br><br>
+
+In specific calculations, you should modify this path in your code, and then use the “make”command to compile and then run it.<br><br><br><br>
+
+[1]	L. Zhang, M. Xiao, J. Zhou, and J. Yu, "Lineage-associated Underrepresented Permutations (LAUPs) of Mammalian Genomic Sequences Based on a Jellyfish-based LAUPs analysis application (JBLA)," Bioinformatics, pp. bty392-bty392, 2018.<br><br><br>
+
+</body>
+</html>

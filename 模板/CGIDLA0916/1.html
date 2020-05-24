@@ -1,0 +1,155 @@
+<html lang="zh"><head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link href="http://www.jsdaima.com/Upload/1484025910/ui-choose.css" rel="stylesheet"-->
+	<script src="//hm.baidu.com/hm.js?dde6ba2851f3db0ddc415ce0f895822e"--></script>
+	<script src="http://www.jsdaima.com/Upload/1484025910/jquery-1.11.0.min.js"></script>
+	<script src="http://www.jsdaima.com/Upload/1484025910/ui-choose.js"></script>
+	<script type="text/javascript">
+	
+function stops(){
+   return false;
+}
+document.oncontextmenu=stops;
+</script>
+	<style>
+    .demo-box {
+        margin: 40px auto;
+        width: 1000px;
+        padding: 20px;
+        border: 5px solid #ccc;
+    }
+    
+    .demo-table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    
+    .demo-table caption {
+        border-bottom: 1px dashed #ccc;
+        height: 40px;
+        margin-bottom: 20px;
+        font: 18px/1.2 normal 'microsoft yahei';
+    }
+    
+    .demo-table tr td {
+        padding: 8px 10px;
+        font: 16px/1.8 normal 'microsoft yahei';
+        vertical-align: top;
+    }
+    
+    .ui-input {
+        vertical-align: top;
+        height: 18px;
+        font-size: 16px;
+        line-height: 20px;
+        border: 1px solid #aaa;
+        padding: 6px 8px;
+        border-radius: 3px;
+    }
+		.jq22-header h1{ text-align: center; font-size: 16px; }
+    </style>
+	<!--[if IE]>
+		<script src="http://www.jsdaima.com/Upload/1484025910/html5.min.js"></script>
+	<![endif]-->
+</head>
+<body rlt="1">
+
+		<header class="-headejq22r">
+			<h1></h1>
+		</header>
+		<div class="demo-box">
+	        <table class="demo-table">
+	            <tbody>
+					<tr>
+						<td>
+							<label>Bacteria</label>
+						</td>
+						<td>
+							<select class="ui-choose" multiple="multiple" id="1" style="display: none;">
+								<option value="1">Bacteria</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label>Plants</label>
+						</td>
+						<td>
+							<select class="ui-choose" multiple="multiple" id="1" style="display: none;">
+								<option value="2">Oryza sativa</option>
+								<option value="3">Arabidopsis thaliana</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label>Human</label>
+						</td>
+						<td>
+							<select class="ui-choose" multiple="multiple" id="1" style="display: none;">
+								<option value="4">Homo sapiens</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label>Primats(except human)</label>
+						</td>
+						<td>
+							<select class="ui-choose" multiple="multiple" id="1" style="display: none;">
+								<option value="5">Ornithorhynchus anatinus</option>
+								<option value="6">Pan troglodytes</option>
+								<option value="7">Macaca mulatta</option>
+								<option value="8">Papio anubis</option>
+								<option value="9">Colobus angolensis</option>
+								<option value="10">Aotus nancymaae</option>
+								<option value="11">Callithrix jacchus</option>
+								<option value="12">Microcebus murinus</option>
+								<option value="13">Otolemur garnettii</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label>Mammals(except Primates)</label>
+						</td>
+						<td>
+							<select class="ui-choose" multiple="multiple" id="1" style="display: none;">
+								<option value="14">Rattus norvegicus</option>
+								<option value="15">Mus musculus</option>
+								<option value="16">Oryctolagus cuniculus</option>
+								<option value="17">Canislupus familiaris</option>
+								<option value="18">Colobus angolensis</option>
+								<option value="19">Miniopterus natalensis</option>
+								<option value="20">Erinaceus europaeus</option>
+								<option value="21">Dasypus novemcinctus</option>
+								<option value="22">Loxodonta africana</option>
+								<option value="23">Echinops telfairi</option>
+								<option value="24">Monodelphis domestica</option>
+							</select>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+	    </div>
+
+	
+	
+	<script>
+	// 将所有.ui-choose实例化
+	$('.ui-choose').ui_choose();
+
+	// 1 select 多选
+	var uc = $('#1').ui_choose();
+	uc.click = function(value, item) {
+	    console.log('click', value);
+	};
+	uc.change = function(value, item) {
+	    console.log('change', value);
+	};
+	</script>
+
+ </body></html>
